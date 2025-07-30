@@ -5,7 +5,7 @@ metadata:
   labels:
     app: resume
 spec:
-  replicas: 2
+  replicas: 3 # Set to 3 replicas to provide a buffer against Spot interruptions
   selector:
     matchLabels:
       app: resume
@@ -15,16 +15,20 @@ spec:
         app: resume
     spec:
       terminationGracePeriodSeconds: 45 # The total time allowed for graceful shutdown
+
+      # --- Pod Anti-Affinity Configuration ---
+      # This tells Kubernetes to prefer scheduling pods on different nodes
+      # based on their 'app: resume' label.
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
           - weight: 100 # Higher weight means stronger preference
-            podAffinityTerm: # Corrected "podAffinintyTerm" to "podAffinityTerm"
+            podAffinityTerm:
               labelSelector:
                 matchLabels:
-                  app: resume # Matches the labels of your own Nginx pods
-              topologyKey: kubernetes.io/hostname # Ensures pods are on different nodes
-      
+                  app: resume # IMPORTANT: This must match the 'app' label of your own pods
+              topologyKey: kubernetes.io/hostname # Ensures preference for different nodes
+
       containers:
       - name: nginx-frontend
         image: my-ecr-repo-url/my-nginx-image:latest # Your ECR image URL
