@@ -1,0 +1,11 @@
+# pdb.yaml
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: resume-nginx-pdb
+spec:
+  minAvailable: 1 # Ensures at least one Nginx pod is available at all times
+  # Or use maxUnavailable: 1 to allow at most one pod to be unavailable
+  selector:
+    matchLabels:
+      app: resume # Must match the 'app' label of your Nginx Deployment pods
