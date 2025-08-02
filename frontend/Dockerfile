@@ -10,10 +10,10 @@ RUN rm -f /etc/nginx/conf.d/default.conf
 
 
 # Copy NGINX configuration file into the container.
-COPY frontend/site-nginx.conf /etc/nginx/conf.d/default.conf
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 
-WORKDIR /usr/share/nginx/html
+WORKDIR /var/www/html
 
 
 # Remove default content from base image's web root.
@@ -21,7 +21,7 @@ RUN rm -rf ./*
 
 
 # Copy site content into the web root.
-COPY frontend/site-files/ /usr/share/nginx/html/
+COPY site-files/ /var/www/html
 
 
 # Set correct ownership for the NGINX user.
