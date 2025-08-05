@@ -1,5 +1,5 @@
-resource "aws_iam_role" "github_actions_resume_role" {
-  name = "github-actions-resume-role"
+resource "aws_iam_role" "github_actions_eks_role" {
+  name = "github-actions-eks-role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
@@ -23,9 +23,9 @@ resource "aws_iam_role" "github_actions_resume_role" {
   })
 }
 
-resource "aws_iam_policy" "github_actions_resume_policy" {
-  name        = "github-actions-resume-policy"
-  description = "Policy allowing GitHub Actions to provision infrastructure for cloud resume and backend"
+resource "aws_iam_policy" "github_actions_eks_policy" {
+  name        = "github-actions-eks-policy"
+  description = "Policy allowing GitHub Actions to provision infrastructure for Terraform and EKS"
 
   policy = jsonencode({
     Version = "2012-10-17",
@@ -263,7 +263,7 @@ resource "aws_iam_policy" "github_actions_resume_policy" {
 }
 
 
-resource "aws_iam_role_policy_attachment" "github_actions_resume_policy_attachment" {
-  role       = aws_iam_role.github_actions_resume_role.name
-  policy_arn = aws_iam_policy.github_actions_resume_policy.arn
+resource "aws_iam_role_policy_attachment" "github_actions_eks_policy_attachment" {
+  role       = aws_iam_role.github_actions_eks_role.name
+  policy_arn = aws_iam_policy.github_actions_eks_policy.arn
 }
