@@ -13,17 +13,17 @@ variable "cluster_name" {
 
 
 # Retrieve the EKS cluster name and identity (OIDC)
-data "aws_eks_cluster" "this" {
+data "aws_eks_cluster" "site_cluster" {
   name = var.cluster_name
 }
 
-data "aws_eks_cluster_auth" "this" {
+data "aws_eks_cluster_auth" "site_cluster_auth" {
   name = var.cluster_name
 }
 
 # Reference the OIDC provider (must already exist in the account)
 data "aws_iam_openid_connect_provider" "this" {
-  url = data.aws_eks_cluster.this.identity[0].oidc[0].issuer
+  url = data.aws_eks_cluster.site_cluster_auth.identity[0].oidc[0].issuer
 }
 
 # Create the IAM policy for the AWS Load Balancer Controller
@@ -42,12 +42,12 @@ resource "aws_iam_role" "alb_controller_role" {
       {
         Effect = "Allow"
         Principal = {
-          Federated = data.aws_iam_openid_connect_provider.this.arn
+          Federated = data.aws_iam_openid_connect_provider.site_cluster_auth.arn
         }
         Action = "sts:AssumeRoleWithWebIdentity"
         Condition = {
           StringEquals = {
-            "${replace(data.aws_eks_cluster.this.identity[0].oidc[0].issuer, "https://", "")}:sub" = "system:serviceaccount:kube-system:aws-load-balancer-controller"
+            "${replace(data.aws_eks_cluster.site_cluster.identity[0].oidc[0].issuer, "https://", "")}:sub" = "system:serviceaccount:kube-system:aws-load-balancer-controller"
           }
         }
       }
