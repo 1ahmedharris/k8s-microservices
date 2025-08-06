@@ -12,10 +12,6 @@ data "aws_eks_cluster" "site_cluster" {
   name = var.cluster_name
 }
 
-data "aws_eks_cluster_auth" "eks_auth" {
-  name = var.cluster_name
-}
-
 # Reference the OIDC provider
 data "aws_iam_openid_connect_provider" "oidc_provider" {
   url = data.aws_eks_cluster.site_cluster.identity[0].oidc[0].issuer
