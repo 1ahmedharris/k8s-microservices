@@ -18,9 +18,10 @@ module "vpc" {
   
 # These will be handled separately (do not include for now)
   #manage_default_route_table = false
-  #create_igw                 = false
+                   
   #create_nat_gateway         = false
   #single_nat_gateway         = false
 }
+
 
 
