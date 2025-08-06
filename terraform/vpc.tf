@@ -7,7 +7,7 @@ module "vpc" {
   name    = "eks-vpc"
 
   cidr            = var.vpc_cidr_block
-  azs             = data.aws_availability_zones.azs.names
+  azs             = data.aws_availability_zones.azs.names[0:3]
   public_subnets  = var.public_subnet_cidr_blocks
   private_subnets = var.private_subnet_cidr_blocks
 
@@ -17,9 +17,10 @@ module "vpc" {
   single_nat_gateway   = true
   
 # These will be handled separately (do not include for now)
-  manage_default_route_table = false
+  #manage_default_route_table = false
   #create_igw                 = false
   #create_nat_gateway         = false
   #single_nat_gateway         = false
 }
+
 
