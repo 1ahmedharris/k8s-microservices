@@ -48,3 +48,37 @@ module "eks_cluster" { # Assuming your main EKS module instance is named "eks_cl
     }
   }
 }
+
+
+
+# In your eks.tf file
+
+module "eks" {
+  source  = "terraform-aws-modules/eks/aws"
+  version = "20.17.2" # Using a recent, stable EKS module version
+
+  cluster_name    = var.cluster_name
+  cluster_version = "1.30" # Specify your desired Kubernetes version
+
+  # --- This is how you reference the VPC module's outputs ---
+  vpc_id     = module.vpc.vpc_id
+  subnet_ids = module.vpc.private_subnets
+  # --- -------------------------------------------------- ---
+
+  # This creates the managed node group with spot instances inside your private subnets
+  eks_managed_node_groups = {
+    spot_workers = {
+      name           = "spot-worker-nodes"
+      capacity_type  = "SPOT"
+      instance_types = ["t3.medium", "t3a.medium"] # Provide a few options for Spot
+
+      min_size     = 3
+      max_size     = 5
+      desired_size = 3
+
+      # Explicitly ensures nodes launch in the private subnets.
+      # While the top-level subnet_ids often suffices, being explicit here is good practice.
+      subnet_ids = module.vpc.private_subnets
+    }
+  }
+}
