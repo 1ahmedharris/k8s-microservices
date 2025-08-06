@@ -3,7 +3,7 @@ data "aws_iam_policy" "lambda_basic_execution_policy" {
 }
 
 resource "aws_iam_role" "lambda_dynamodb_role" {
-  name = "lamba-dynamodb-role"
+  name = "lambda-dynamodb-role"
   
   assume_role_policy = jsonencode({
     Version   = "2012-10-17"
