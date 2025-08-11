@@ -58,7 +58,7 @@ resource "aws_network_acl" "public" {
     to_port    = 443
   }
 
-  # Ingress: Allow internal VPC TCP traffic
+  # Ingress: Allow internal vpc traffic
   ingress {
     rule_no    = 120
     protocol   = 6
@@ -138,7 +138,7 @@ resource "aws_network_acl" "private" {
     to_port    = 65535
   }
 
-  # Egress: Allow HTTP to anywhere
+  # Egress: Allow HTTP 
   egress {
     rule_no    = 100
     protocol   = 6
@@ -148,7 +148,7 @@ resource "aws_network_acl" "private" {
     to_port    = 80
   }
 
-  # Egress: Allow HTTPS to anywhere
+  # Egress: Allow HTTPS 
   egress {
     rule_no    = 110
     protocol   = 6
@@ -172,6 +172,7 @@ resource "aws_network_acl" "private" {
     Name = "private-nacl"
   }
 }
+
 
 
 
