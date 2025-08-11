@@ -11,3 +11,5 @@ private_subnet_cidr_blocks = [
   "10.0.5.0/24",
   "10.0.6.0/24"
 ]
+
+cluster_name = "eks-cluster"
