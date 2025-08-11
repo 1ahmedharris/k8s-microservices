@@ -144,51 +144,102 @@ resource "aws_network_acl" "private" {
 
 
 
-resource "aws_network_acl" "eks_nacl" {
-  vpc_id = aws_vpc.eks_vpc.id
+# Public NACL
+resource "aws_network_acl" "public" {
+  vpc_id     = module.vpc.vpc_id
+  subnet_ids = module.vpc.public_subnets
 
-  # Ingress Rules
+  # Ingress: Allow HTTP from anywhere
   ingress {
-    protocol   = "tcp"
     rule_no    = 100
+    protocol   = 6
     action     = "allow"
-    cidr_block = "0.0.0.0/0"  # Example: Allow all inbound TCP traffic
+    cidr_block = "0.0.0.0/0"
     from_port  = 80
     to_port    = 80
   }
 
+  # Ingress: Allow HTTPS from anywhere
   ingress {
-    protocol   = "tcp"
     rule_no    = 110
+    protocol   = 6
     action     = "allow"
     cidr_block = "0.0.0.0/0"
     from_port  = 443
     to_port    = 443
   }
 
-  # Egress Rules
-  egress {
-    protocol   = "tcp"
-    rule_no    = 200
+  # Ingress: Allow all TCP within VPC (internal ALB <-> EC2, etc.)
+  ingress {
+    rule_no    = 120
+    protocol   = 6
     action     = "allow"
-    cidr_block = "0.0.0.0/0"  # Example: Allow all outbound TCP traffic
-    from_port  = 1024
-    to_port    = 65535 # Ephemeral ports for outbound traffic
+    cidr_block = var.vpc_cidr_block
+    from_port  = 0
+    to_port    = 65535
   }
 
+  # Egress: Allow HTTP to anywhere
   egress {
-    protocol   = "-1" # All protocols
-    rule_no    = 210
+    rule_no    = 100
+    protocol   = 6
     action     = "allow"
     cidr_block = "0.0.0.0/0"
+    from_port  = 80
+    to_port    = 80
+  }
+
+  # Egress: Allow HTTPS to anywhere
+  egress {
+    rule_no    = 110
+    protocol   = 6
+    action     = "allow"
+    cidr_block = "0.0.0.0/0"
+    from_port  = 443
+    to_port    = 443
+  }
+
+  # Egress: Allow all TCP within VPC
+  egress {
+    rule_no    = 120
+    protocol   = 6
+    action     = "allow"
+    cidr_block = var.vpc_cidr_block
     from_port  = 0
-    to_port    = 0
+    to_port    = 65535
   }
 
   tags = {
-    Name = "eks-cluster-nacl"
+    Name = "public-nacl"
   }
 }
 
+# Private NACL
+resource "aws_network_acl" "private" {
+  vpc_id     = module.vpc.vpc_id
+  subnet_ids = module.vpc.private_subnets
 
+  # Ingress: Allow all TCP within VPC (internal comms only)
+  ingress {
+    rule_no    = 100
+    protocol   = 6
+    action     = "allow"
+    cidr_block = var.vpc_cidr_block
+    from_port  = 0
+    to_port    = 65535
+  }
 
+  # Egress: Allow all TCP within VPC
+  egress {
+    rule_no    = 100
+    protocol   = 6
+    action     = "allow"
+    cidr_block = var.vpc_cidr_block
+    from_port  = 0
+    to_port    = 65535
+  }
+
+  tags = {
+    Name = "private-nacl"
+  }
+}
