@@ -38,20 +38,10 @@ resource "aws_network_acl" "public" {
   vpc_id     = module.vpc.vpc_id
   subnet_ids = module.vpc.public_subnets
 
-  # Ingress: Allow HTTP
-  ingress {
-    rule_no    = 100
-    protocol   = 6
-    action     = "allow"
-    cidr_block = "0.0.0.0/0"
-    from_port  = 80
-    to_port    = 80
-  }
-
   # Ingress: Allow HTTPS
   ingress {
-    rule_no    = 110
-    protocol   = 6
+    rule_no    = 100
+    protocol   = "tcp"
     action     = "allow"
     cidr_block = "0.0.0.0/0"
     from_port  = 443
@@ -60,28 +50,19 @@ resource "aws_network_acl" "public" {
 
   # Ingress: Allow internal vpc traffic
   ingress {
-    rule_no    = 120
-    protocol   = 6
+    rule_no    = 110
+    protocol   = "tcp"
     action     = "allow"
-    cidr_block = var.vpc_cidr_block
-    from_port  = 0
+    cidr_block = var.private_subnet_cidr_blocks
+    from_port  = 1024
     to_port    = 65535
   }
 
-  # Egress: Allow HTTP
-  egress {
-    rule_no    = 100
-    protocol   = 6
-    action     = "allow"
-    cidr_block = "0.0.0.0/0"
-    from_port  = 80
-    to_port    = 80
-  }
 
   # Egress: Allow HTTPS
   egress {
-    rule_no    = 110
-    protocol   = 6
+    rule_no    = 100
+    protocol   = "tcp"
     action     = "allow"
     cidr_block = "0.0.0.0/0"
     from_port  = 443
@@ -93,7 +74,7 @@ resource "aws_network_acl" "public" {
     rule_no    = 120
     protocol   = 6
     action     = "allow"
-    cidr_block = var.vpc_cidr_block
+    cidr_block = var.private_subnet_cidr_blocks
     from_port  = 0
     to_port    = 65535
 
@@ -172,6 +153,7 @@ resource "aws_network_acl" "private" {
     Name = "private-nacl"
   }
 }
+
 
 
 
