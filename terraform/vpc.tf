@@ -95,7 +95,7 @@ resource "aws_network_acl" "private" {
     rule_no    = 100
     protocol   = "tcp"
     action     = "allow"
-    cidr_block = var.vpc_cidr_blocks
+    cidr_block = var.vpc_cidr_block
     from_port  = 80
     to_port    = 80
   }
@@ -113,7 +113,7 @@ resource "aws_network_acl" "private" {
     rule_no    = 120
     protocol   = "tcp"
     action     = "allow"
-    cidr_block = "0.0.0.0/0"
+    cidr_block = vpc_cidr_block
     from_port  = 443
     to_port    = 443
   }
@@ -142,6 +142,7 @@ resource "aws_network_acl" "private" {
     Name = "private-nacl"
   }
 }
+
 
 
 
