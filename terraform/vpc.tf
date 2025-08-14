@@ -72,11 +72,11 @@ resource "aws_network_acl" "public" {
   # Egress: Allow ephemeral ports for return traffic
   egress {
     rule_no    = 120
-    protocol   = 6
+    protocol   = "tcp"
     action     = "allow"
     cidr_block = var.private_subnet_cidr_blocks
-    from_port  = 0
-    to_port    = 65535
+    from_port  = 80
+    to_port    = 80
 
   tags = {
     Name = "public-nacl"
@@ -153,6 +153,7 @@ resource "aws_network_acl" "private" {
     Name = "private-nacl"
   }
 }
+
 
 
 
