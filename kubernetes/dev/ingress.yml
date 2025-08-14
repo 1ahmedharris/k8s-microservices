@@ -48,7 +48,7 @@ metadata:
     
     # Specifies the listeners for the ALB.
     # HTTP on port 80 and HTTPS on port 443.
-    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
+    alb.ingress.kubernetes.io/listen-ports: '{"HTTPS":443}'
     
     # --- HTTPS Configuration ---
     # REQUIRED: The ARN of your AWS Certificate Manager (ACM) SSL/TLS certificate.
@@ -80,3 +80,4 @@ spec:
                 name: resume-nginx-service # Matches the name of your ClusterIP Service
                 port:
                   number: 80 # The target port on the ClusterIP Service (which then routes to Nginx's port 80)
+
