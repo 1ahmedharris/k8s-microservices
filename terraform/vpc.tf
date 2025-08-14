@@ -59,24 +59,25 @@ resource "aws_network_acl" "public" {
   }
 
 
-  # Egress: Allow HTTPS
+  # Egress: Allow HTTP to worker nodes
   egress {
     rule_no    = 100
     protocol   = "tcp"
     action     = "allow"
-    cidr_block = "0.0.0.0/0"
-    from_port  = 443
-    to_port    = 443
+    cidr_block = var.vpc_cidr_block
+    from_port  = 80
+    to_port    = 80
   }
 
-  # Egress: Allow HTTP
+  # Egress: Allow outbound traffic to client 
   egress {
-    rule_no    = 120
-    protocol   = "tcp"
-    action     = "allow"
-    cidr_block = var.private_subnet_cidr_blocks
-    from_port  = 80
-    to_port    = 80
+    rule_no    = 110
+    protocol   = "tcp"
+    action     = "allow"
+    cidr_block = "0.0.0.0/0"
+    from_port  = 1024
+    to_port    = 65535
+  }
 
   tags = {
     Name = "public-nacl"
@@ -94,7 +95,7 @@ resource "aws_network_acl" "private" {
     rule_no    = 100
     protocol   = "tcp"
     action     = "allow"
-    cidr_block = var.public_subnet_cidr_blocks
+    cidr_block = var.vpc_cidr_blocks
     from_port  = 80
     to_port    = 80
   }
@@ -105,7 +106,7 @@ resource "aws_network_acl" "private" {
     rule_no    = 110
     protocol   = "tcp"
     action     = "allow"
-    cidr_block = var.public_subnet_cidr_blocks
+    cidr_block = var.vpc_cidr_blocks
     from_port  = 1024
     to_port    = 65535
   }
@@ -114,6 +115,7 @@ resource "aws_network_acl" "private" {
     Name = "private-nacl"
   }
 }
+
 
 
 
