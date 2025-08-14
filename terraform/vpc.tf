@@ -69,7 +69,7 @@ resource "aws_network_acl" "public" {
     to_port    = 443
   }
 
-  # Egress: Allow ephemeral ports for return traffic
+  # Egress: Allow HTTP
   egress {
     rule_no    = 120
     protocol   = "tcp"
@@ -114,6 +114,7 @@ resource "aws_network_acl" "private" {
     Name = "private-nacl"
   }
 }
+
 
 
 
