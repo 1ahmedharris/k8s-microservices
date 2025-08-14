@@ -3,16 +3,20 @@ module "eks_cluster" { # Assuming your main EKS module instance is named "eks_cl
   version = "~> 20.0" # IMPORTANT: Always specify the exact module version you are using
 
   cluster_name = "my-cloud-resume-cluster" # Replace with your actual cluster name
+  cluster_version = "1.30" # Specify your desired Kubernetes version
+
   vpc_id       = module.vpc.vpc_id       # Assuming you have a VPC module outputting vpc_id
   subnet_ids   = module.vpc.private_subnets # Assuming you have private subnets from your VPC module
-
-  # ... other cluster-level configurations for the EKS module (e.g., cluster_version, tags) ...
+  
+  cluster_endpoint_private_access = true
+  
+# ... other cluster-level configurations for the EKS module (e.g., cluster_version, tags) ...
 
   # --- EKS Managed Node Group Configuration ---
   # Define your managed node groups here as a map.
   # The key (e.g., "resume-app-nodes") becomes the name of your node group.
   managed_node_groups = {
-    "resume-app-nodes" = {
+    "spot-worker-nodes" = {
       # --- Instance Type Diversification (Most Important) ---
       # Provide a diverse list of suitable instance types for your workload.
       # AWS will pick from these based on the capacity-optimized strategy (default for Spot).
@@ -26,8 +30,8 @@ module "eks_cluster" { # Assuming your main EKS module instance is named "eks_cl
       # desired_size: Aims for this many nodes, providing a buffer.
       # max_size: The upper limit for scaling.
       min_size     = 2
-      desired_size = 3
       max_size     = 4
+      desired_size = 3
 
       # --- Node Role ARN (Optional, if managing IAM role externally) ---
       # If you are creating the IAM role for your EKS worker nodes outside this module
@@ -51,34 +55,4 @@ module "eks_cluster" { # Assuming your main EKS module instance is named "eks_cl
 
 
 
-# In your eks.tf file
 
-module "eks" {
-  source  = "terraform-aws-modules/eks/aws"
-  version = "20.17.2" # Using a recent, stable EKS module version
-
-  cluster_name    = var.cluster_name
-  cluster_version = "1.30" # Specify your desired Kubernetes version
-
-  # --- This is how you reference the VPC module's outputs ---
-  vpc_id     = module.vpc.vpc_id
-  subnet_ids = module.vpc.private_subnets
-  # --- -------------------------------------------------- ---
-
-  # This creates the managed node group with spot instances inside your private subnets
-  eks_managed_node_groups = {
-    spot_workers = {
-      name           = "spot-worker-nodes"
-      capacity_type  = "SPOT"
-      instance_types = ["t3.medium", "t3a.medium"] # Provide a few options for Spot
-
-      min_size     = 3
-      max_size     = 5
-      desired_size = 3
-
-      # Explicitly ensures nodes launch in the private subnets.
-      # While the top-level subnet_ids often suffices, being explicit here is good practice.
-      subnet_ids = module.vpc.private_subnets
-    }
-  }
-}
