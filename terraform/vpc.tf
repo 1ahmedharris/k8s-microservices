@@ -101,6 +101,15 @@ resource "aws_network_acl" "private" {
   }
 
   ingress {
+    rule_no    = 120
+    protocol   = "tcp"
+    action     = "allow"
+    cidr_block = vpc_cidr_block
+    from_port  = 443
+    to_port    = 443
+  }
+
+  ingress {
     rule_no    = 110
     protocol   = "tcp"
     action     = "allow"
@@ -109,14 +118,6 @@ resource "aws_network_acl" "private" {
     to_port    = 65535
   }
 
-  ingress {
-    rule_no    = 120
-    protocol   = "tcp"
-    action     = "allow"
-    cidr_block = vpc_cidr_block
-    from_port  = 443
-    to_port    = 443
-  }
 
 
   # Egress: Allow node responses on ephemeral ports 
@@ -153,6 +154,7 @@ resource "aws_network_acl" "private" {
     Name = "private-nacl"
   }
 }
+
 
 
 
