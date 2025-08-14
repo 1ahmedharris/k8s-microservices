@@ -112,39 +112,20 @@ resource "aws_network_acl" "private" {
   # Ingress: Allow ephemeral ports from VPC
   ingress {
     rule_no    = 120
-    protocol   = 6
+    protocol   = "tcp"
     action     = "allow"
-    cidr_block = var.vpc_cidr_block
+    cidr_block = var.private_subnet_cidr_blocks
     from_port  = 1024
     to_port    = 65535
   }
 
-  # Egress: Allow HTTP 
-  egress {
-    rule_no    = 100
-    protocol   = 6
-    action     = "allow"
-    cidr_block = "0.0.0.0/0"
-    from_port  = 80
-    to_port    = 80
-  }
 
-  # Egress: Allow HTTPS 
-  egress {
-    rule_no    = 110
-    protocol   = 6
-    action     = "allow"
-    cidr_block = "0.0.0.0/0"
-    from_port  = 443
-    to_port    = 443
-  }
-
-  # Egress: Allow ephemeral ports for return traffic
+  # Egress: Allow node responses on ephemeral ports 
   egress {
     rule_no    = 120
-    protocol   = 6
+    protocol   = "tcp"
     action     = "allow"
-    cidr_block = "0.0.0.0/0"
+    cidr_block = var.public_subnet_cidr_blocks
     from_port  = 1024
     to_port    = 65535
   }
@@ -153,6 +134,7 @@ resource "aws_network_acl" "private" {
     Name = "private-nacl"
   }
 }
+
 
 
 
