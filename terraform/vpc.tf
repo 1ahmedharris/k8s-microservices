@@ -100,10 +100,27 @@ resource "aws_network_acl" "private" {
     to_port    = 80
   }
 
+  ingress {
+    rule_no    = 110
+    protocol   = "tcp"
+    action     = "allow"
+    cidr_block = "0.0.0.0/0"
+    from_port  = 1024
+    to_port    = 65535
+  }
+
+  ingress {
+    rule_no    = 120
+    protocol   = "tcp"
+    action     = "allow"
+    cidr_block = "0.0.0.0/0"
+    from_port  = 443
+    to_port    = 443
+  }
 
   # Egress: Allow node responses on ephemeral ports 
   egress {
-    rule_no    = 110
+    rule_no    = 100
     protocol   = "tcp"
     action     = "allow"
     cidr_block = var.vpc_cidr_blocks
@@ -111,10 +128,21 @@ resource "aws_network_acl" "private" {
     to_port    = 65535
   }
 
+  # Egress: nodes -> Internet/AWS services (pull images, EKS APIs, etc.)
+  egress {
+    rule_no    = 110
+    protocol   = "tcp"
+    action     = "allow"
+    cidr_block = "0.0.0.0/0"
+    from_port  = 443
+    to_port    = 443
+  }
+
   tags = {
     Name = "private-nacl"
   }
 }
+
 
 
 
