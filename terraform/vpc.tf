@@ -305,16 +305,6 @@ resource "aws_network_acl" "private" {
     to_port    = 80
   }
 
-  # Ingress: Allow EKS control plane kubelet (10250)
-  ingress {
-    rule_no    = 110
-    protocol   = "tcp"
-    action     = "allow"
-    cidr_block = var.vpc_cidr_block
-    from_port  = 10250
-    to_port    = 10250
-  }
-
   # Ingress: Allow EKS control plane (HTTPS:443)
   ingress {
     rule_no    = 120
@@ -359,6 +349,7 @@ resource "aws_network_acl" "private" {
     Name = "private-nacl"
   }
 }
+
 
 
 
