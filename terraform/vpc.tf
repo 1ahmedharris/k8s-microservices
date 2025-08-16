@@ -113,7 +113,7 @@ resource "aws_network_acl" "private" {
     rule_no    = 110
     protocol   = "tcp"
     action     = "allow"
-    cidr_block = "0.0.0.0/0"
+    cidr_block = vpc_cidr_block
     from_port  = 1024
     to_port    = 65535
   }
@@ -135,16 +135,6 @@ resource "aws_network_acl" "private" {
     protocol   = "tcp"
     action     = "allow"
     cidr_block = var.vpc_cidr_block
-    from_port  = 443
-    to_port    = 443
-  }
-
-  # Egress: nodes -> Internet/AWS services (pull images, EKS APIs, etc.)
-  egress {
-    rule_no    = 110
-    protocol   = "tcp"
-    action     = "allow"
-    cidr_block = "0.0.0.0/0"
     from_port  = 443
     to_port    = 443
   }
@@ -349,6 +339,7 @@ resource "aws_network_acl" "private" {
     Name = "private-nacl"
   }
 }
+
 
 
 
