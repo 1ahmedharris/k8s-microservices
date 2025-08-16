@@ -20,6 +20,7 @@ module "vpc" {
   single_nat_gateway   = true
 
   enable_dynamodb_endpoint = true
+  enable_s3_endpoint = true
 
   public_subnet_tags = {
     "kubernetes.io/cluster/${var.cluster_name}" = "shared"
@@ -339,6 +340,7 @@ resource "aws_network_acl" "private" {
     Name = "private-nacl"
   }
 }
+
 
 
 
