@@ -49,6 +49,15 @@ resource "aws_network_acl" "public" {
     to_port    = 443
   }
 
+ ingress {
+  rule_no    = 100
+  protocol   = "tcp"
+  action     = "allow"
+  cidr_block = <your VPC CIDR, e.g. 10.0.0.0/20>
+  from_port  = 443
+  to_port    = 443
+ }
+
   # Ingress: Allow traffic from aws services/updates on ephemeral ports
   ingress {
     rule_no    = 110
@@ -156,6 +165,7 @@ resource "aws_network_acl" "private" {
     Name = "private-nacl"
   }
 }
+
 
 
 
