@@ -89,14 +89,7 @@ resource "aws_network_acl" "public" {
   }
 
 
-  egress {
-  rule_no    = 100
-  protocol   = "tcp"
-  action     = "allow"
-  cidr_block = "0.0.0.0/0"  # For AWS services without endpoints and external updates
-  from_port  = 443
-  to_port    = 443
-}
+
 
   tags = {
     Name = "public-nacl"
@@ -139,7 +132,7 @@ resource "aws_network_acl" "private" {
     to_port    = 65535
   }
 
-  # Egress: Allow to EKS control plane/DynamoDB/CloudWatch/ECR/STS endpoints (HTTPS:443)
+  # Egress: Allow to EKS control plane/DynamoDB endpoints (HTTPS:443)
   egress {
     rule_no    = 110
     protocol   = "tcp"
@@ -149,10 +142,21 @@ resource "aws_network_acl" "private" {
     to_port    = 443
   }
 
+
+  egress {
+    rule_no    = 100
+    protocol   = "tcp"
+    action     = "allow"
+    cidr_block = "0.0.0.0/0"  # For AWS services without endpoints and external updates
+    from_port  = 443
+    to_port    = 443
+  }
+
   tags = {
     Name = "private-nacl"
   }
 }
+
 
 
 
