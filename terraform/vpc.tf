@@ -157,14 +157,15 @@ resource "aws_network_acl" "private" {
     protocol   = "tcp"
     action     = "allow"
     cidr_block = "0.0.0.0/0"  # For AWS services without endpoints and external updates
-    from_port  = 1024
-    to_port    = 65535
+    from_port  = 443
+    to_port    = 443
   }
 
   tags = {
     Name = "private-nacl"
   }
 }
+
 
 
 
