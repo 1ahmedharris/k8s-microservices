@@ -93,8 +93,8 @@ resource "aws_network_acl" "public" {
     protocol   = "tcp"
     action     = "allow"
     cidr_block = "0.0.0.0/0"
-    from_port  = 1024
-    to_port    = 65535
+    from_port  = 443
+    to_port    = 443
   }
 
 
@@ -165,6 +165,7 @@ resource "aws_network_acl" "private" {
     Name = "private-nacl"
   }
 }
+
 
 
 
