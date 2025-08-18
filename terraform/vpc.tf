@@ -108,16 +108,6 @@ resource "aws_network_acl" "private" {
     to_port    = 80
   }
 
-  # Ingress: Allow EKS control plane (HTTPS:443)
-  ingress {
-    rule_no    = 120
-    protocol   = "tcp"
-    action     = "allow"
-    cidr_block = var.vpc_cidr_block
-    from_port  = 443
-    to_port    = 443
-  }
-
   # Ingress: Allow return traffic from ALB/AWS services (ephemeral ports)
   ingress {
     rule_no    = 130
@@ -127,6 +117,7 @@ resource "aws_network_acl" "private" {
     from_port  = 1024
     to_port    = 65535
   }
+
 
   # Egress: Allow pod responses to ALB (ephemeral ports)
   egress {
@@ -152,6 +143,7 @@ resource "aws_network_acl" "private" {
     Name = "private-nacl"
   }
 }
+
 
 
 
