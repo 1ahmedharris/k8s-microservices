@@ -88,6 +88,16 @@ resource "aws_network_acl" "public" {
     to_port    = 65535
   }
 
+
+  egress {
+  rule_no    = 100
+  protocol   = "tcp"
+  action     = "allow"
+  cidr_block = "0.0.0.0/0"  # For AWS services without endpoints and external updates
+  from_port  = 443
+  to_port    = 443
+}
+
   tags = {
     Name = "public-nacl"
   }
@@ -143,6 +153,7 @@ resource "aws_network_acl" "private" {
     Name = "private-nacl"
   }
 }
+
 
 
 
