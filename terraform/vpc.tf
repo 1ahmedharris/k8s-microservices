@@ -133,16 +133,6 @@ resource "aws_network_acl" "private" {
     to_port    = 65535
   }
 
-  # Ingress: Allow responses from updates/AWS services 
-  ingress {
-    rule_no    = 130
-    protocol   = "tcp"
-    action     = "allow"
-    cidr_block = var.vpc_cidr_block
-    from_port  = 1024
-    to_port    = 65535
-  }
-
   ingress {
     rule_no    = 110
     protocol   = "tcp"
@@ -197,6 +187,7 @@ resource "aws_network_acl" "private" {
     Name = "private-nacl"
   }
 }
+
 
 
 
