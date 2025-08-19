@@ -138,6 +138,16 @@ resource "aws_network_acl" "private" {
     to_port    = 65535
   }
 
+  ingress {
+    rule_no    = 110
+    protocol   = "tcp"
+    action     = "allow"
+    cidr_block = var.vpc_cidr_block
+    from_port  = 443
+    to_port    = 443
+  }
+  
+
 
   # Egress: Allow pod responses to ALB (ephemeral ports) and port 10250
   egress {
@@ -173,6 +183,7 @@ resource "aws_network_acl" "private" {
     Name = "private-nacl"
   }
 }
+
 
 
 
