@@ -39,8 +39,8 @@ resource "aws_network_acl" "public" {
   vpc_id     = module.vpc.vpc_id
   subnet_ids = module.vpc.public_subnets
 
-  # Ingress: Allow HTTPS from CloudFront/internet to ALB
- ingress {
+  # 1 Ingress: Allow HTTPS from clients/cloudfront to ALB
+  ingress {
     rule_no    = 100
     protocol   = "tcp"
     action     = "allow"
@@ -49,14 +49,14 @@ resource "aws_network_acl" "public" {
     to_port    = 443
   }
 
- ingress {
-  rule_no    = 100
-  protocol   = "tcp"
-  action     = "allow"
-  cidr_block = <your VPC CIDR, e.g. 10.0.0.0/20>
-  from_port  = 443
-  to_port    = 443
- }
+  ingress {
+    rule_no    = 100
+    protocol   = "tcp"
+    action     = "allow"
+    cidr_block = <your VPC CIDR, e.g. 10.0.0.0/20>
+    from_port  = 443
+    to_port    = 443
+  }
 
   # Ingress: Allow traffic from aws services/updates on ephemeral ports
   ingress {
@@ -183,6 +183,7 @@ resource "aws_network_acl" "private" {
     Name = "private-nacl"
   }
 }
+
 
 
 
