@@ -40,7 +40,7 @@ resource "aws_network_acl" "public" {
   subnet_ids = module.vpc.public_subnets
 
   # Ingress: Allow HTTPS from CloudFront/internet to ALB
-  ingress {
+ ingress {
     rule_no    = 100
     protocol   = "tcp"
     action     = "allow"
@@ -97,6 +97,14 @@ resource "aws_network_acl" "public" {
     to_port    = 443
   }
 
+  egress {
+    rule_no    = 100
+    protocol   = "tcp"
+    action     = "allow"
+    cidr_block = var.vpc_cidr_block
+    from_port  = 1024
+    to_port    = 65535
+  }
 
 
 
@@ -165,6 +173,7 @@ resource "aws_network_acl" "private" {
     Name = "private-nacl"
   }
 }
+
 
 
 
