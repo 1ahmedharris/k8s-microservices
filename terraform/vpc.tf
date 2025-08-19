@@ -51,7 +51,7 @@ resource "aws_network_acl" "public" {
 
   # ADD 2.2 INGRESS FROM PRIVATE SUBNETS HEADED TO EGRESS/PUBLIC SUBNETS
   # ADD 2.3 EGRESS FOR API CALL FROM PUBLIC SUBNETS
-  # Ingress: *2.4 Allow inbound responses from updates/aws services
+  # Ingress: *2.4 Allow inbound responses from updates/api calls to aws services
   ingress {
     rule_no    = 110
     protocol   = "tcp"
@@ -61,6 +61,7 @@ resource "aws_network_acl" "public" {
     to_port    = 65535
   }
 
+  # Ingress: 2.2 Allow updates/aws services api calls 
   ingress {
     rule_no    = 110
     protocol   = "tcp"
@@ -81,7 +82,7 @@ resource "aws_network_acl" "public" {
   }
 
 
-  # Egress: Allow responses/requests to internet on ephemeral ports
+  # Egress: 2.3 Allow updates/api calls to aws services 
   egress {
     rule_no    = 110
     protocol   = "tcp"
@@ -97,6 +98,16 @@ resource "aws_network_acl" "public" {
     protocol   = "tcp"
     action     = "allow"
     cidr_block = "0.0.0.0/0"
+    from_port  = 1024
+    to_port    = 65535
+  }
+
+  Egress: 2.5 Allow responses from updates/api calls
+  egress {
+    rule_no    = 110
+    protocol   = "tcp"
+    action     = "allow"
+    cidr_block = "var.vpc_cidr_block"
     from_port  = 1024
     to_port    = 65535
   }
@@ -123,7 +134,7 @@ resource "aws_network_acl" "private" {
     to_port    = 80
   }
 
-  # Ingress: 2.5 Allow responses from updates/aws services  
+  # Ingress: 2.6 Allow responses from updates/aws services  
   ingress {
     rule_no    = 130
     protocol   = "tcp"
@@ -187,6 +198,7 @@ resource "aws_network_acl" "private" {
     Name = "private-nacl"
   }
 }
+
 
 
 
