@@ -139,7 +139,7 @@ resource "aws_network_acl" "private" {
   }
 
 
-  # Egress: Allow pod responses to ALB (ephemeral ports)
+  # Egress: Allow pod responses to ALB (ephemeral ports) and port 10250
   egress {
     rule_no    = 100
     protocol   = "tcp"
@@ -173,6 +173,7 @@ resource "aws_network_acl" "private" {
     Name = "private-nacl"
   }
 }
+
 
 
 
