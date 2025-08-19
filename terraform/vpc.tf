@@ -49,16 +49,9 @@ resource "aws_network_acl" "public" {
     to_port    = 443
   }
 
-  ingress {
-    rule_no    = 100
-    protocol   = "tcp"
-    action     = "allow"
-    cidr_block = <your VPC CIDR, e.g. 10.0.0.0/20>
-    from_port  = 443
-    to_port    = 443
-  }
-
-  # Ingress: Allow traffic from aws services/updates on ephemeral ports
+  # ADD 2.2 INGRESS FROM PRIVATE SUBNETS HEADED TO EGRESS/PUBLIC SUBNETS
+  # ADD 2.3 EGRESS FOR API CALL FROM PUBLIC SUBNETS
+  # Ingress: *2.4 Allow inbound responses from updates/aws services
   ingress {
     rule_no    = 110
     protocol   = "tcp"
@@ -86,6 +79,7 @@ resource "aws_network_acl" "public" {
     from_port  = 80
     to_port    = 80
   }
+
 
   # Egress: Allow responses/requests to internet on ephemeral ports
   egress {
@@ -129,14 +123,24 @@ resource "aws_network_acl" "private" {
     to_port    = 80
   }
 
-  # Ingress: Allow return traffic from AWS services 
+  # Ingress: 2.5 Allow responses from updates/aws services  
   ingress {
     rule_no    = 130
     protocol   = "tcp"
     action     = "allow"
-    cidr_block = "0.0.0.0/0"
-    from_port  = 443
-    to_port    = 443
+    cidr_block = var.vpc_cidr_block
+    from_port  = 1024
+    to_port    = 65535
+  }
+
+  # Ingress: Allow responses from updates/AWS services 
+  ingress {
+    rule_no    = 130
+    protocol   = "tcp"
+    action     = "allow"
+    cidr_block = var.vpc_cidr_block
+    from_port  = 1024
+    to_port    = 65535
   }
 
   ingress {
@@ -179,12 +183,12 @@ resource "aws_network_acl" "private" {
     to_port    = 443
   }
 
-
+  # Egress: 2.1 Allow outbound traffic for external updates and api calls to AWS services 
   egress {
     rule_no    = 100
     protocol   = "tcp"
     action     = "allow"
-    cidr_block = "0.0.0.0/0"  # For AWS services without endpoints and external updates
+    cidr_block = "0.0.0.0/0"   
     from_port  = 443
     to_port    = 443
   }
@@ -193,6 +197,7 @@ resource "aws_network_acl" "private" {
     Name = "private-nacl"
   }
 }
+
 
 
 
