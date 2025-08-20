@@ -144,7 +144,7 @@ resource "aws_network_acl" "private" {
     to_port    = 80
   }
 
-  # 2.6 Ingress: Allow responses from updates/aws services  
+  # 2.6, 3.2, 4.2 Ingress: Allow responses from eks control plane, dynamodb, updates, aws services, kubelet  
   ingress {
     rule_no    = 130
     protocol   = "tcp"
@@ -154,24 +154,14 @@ resource "aws_network_acl" "private" {
     to_port    = 65535
   }
 
-  # 3.2 Ingress: Allow return eks control plane/dynamodb traffic 
-  ingress {
-    rule_no    = 110
-    protocol   = "tcp"
-    action     = "allow"
-    cidr_block = var.vpc_cidr_block
-    from_port  = 1024
-    to_port    = 65535
-  }
-
-  # 4.2 Ingress: Allow return kubelet traffic  
+  # Ingress: Allow return kubelet traffic  
     ingress {
     rule_no    = 110
     protocol   = "tcp"
     action     = "allow"
     cidr_block = var.vpc_cidr_block
-    from_port  = 10250
-    to_port    = 10250
+    from_port  = 443
+    to_port    = 443
   }
   
 
@@ -222,6 +212,7 @@ resource "aws_network_acl" "private" {
     Name = "private-nacl"
   }
 }
+
 
 
 
