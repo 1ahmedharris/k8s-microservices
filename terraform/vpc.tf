@@ -164,6 +164,7 @@ resource "aws_network_acl" "private" {
     to_port    = 65535
   }
 
+  # 4.2 Ingress: Allow return kubelet traffic  
     ingress {
     rule_no    = 110
     protocol   = "tcp"
@@ -185,17 +186,7 @@ resource "aws_network_acl" "private" {
     to_port    = 65535
   }
 
-  # 3.1 Egress: Allow to EKS control plane/DynamoDB endpoints (HTTPS:443)
-  egress {
-    rule_no    = 110
-    protocol   = "tcp"
-    action     = "allow"
-    cidr_block = var.vpc_cidr_block
-    from_port  = 443
-    to_port    = 443
-  }
-
-  # Egress: 2.1 Allow outbound traffic for external updates and api calls to AWS services 
+  # 2.1 Egress: Allow outbound traffic for external updates and api calls to AWS services 
   egress {
     rule_no    = 100
     protocol   = "tcp"
@@ -205,10 +196,33 @@ resource "aws_network_acl" "private" {
     to_port    = 443
   }
 
+  # 3.1 Egress: Allow to EKS control plane/DynamoDB endpoints 
+  egress {
+    rule_no    = 110
+    protocol   = "tcp"
+    action     = "allow"
+    cidr_block = var.vpc_cidr_block
+    from_port  = 443
+    to_port    = 443
+  }
+
+  # 4.1 Egress: Allow kublet to eks control plane traffic
+  egress {
+    rule_no    = 110
+    protocol   = "tcp"
+    action     = "allow"
+    cidr_block = var.vpc_cidr_block
+    from_port  = 10250
+    to_port    = 10250
+  }
+
+
+
   tags = {
     Name = "private-nacl"
   }
 }
+
 
 
 
