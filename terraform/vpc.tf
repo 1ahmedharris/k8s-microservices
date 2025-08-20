@@ -166,7 +166,7 @@ resource "aws_network_acl" "private" {
   
 
 
-  # 1.4 Egress: Allow pod responses to ALB/clients and port 10250
+  # 1.4, 4.1  Egress: Allow pod responses to alb/clients and kubelet port 10250 to eks control plane 
   egress {
     rule_no    = 100
     protocol   = "tcp"
@@ -186,7 +186,7 @@ resource "aws_network_acl" "private" {
     to_port    = 443
   }
 
-  # 3.1 Egress: Allow to EKS control plane/DynamoDB endpoints 
+  # 3.1 Egress: Allow to eks control plane and dynamodb endpoints 
   egress {
     rule_no    = 110
     protocol   = "tcp"
@@ -196,22 +196,12 @@ resource "aws_network_acl" "private" {
     to_port    = 443
   }
 
-  # 4.1 Egress: Allow kublet to eks control plane traffic
-  egress {
-    rule_no    = 110
-    protocol   = "tcp"
-    action     = "allow"
-    cidr_block = var.vpc_cidr_block
-    from_port  = 10250
-    to_port    = 10250
-  }
-
-
-
+  
   tags = {
     Name = "private-nacl"
   }
 }
+
 
 
 
