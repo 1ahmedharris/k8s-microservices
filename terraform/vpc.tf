@@ -102,7 +102,7 @@ resource "aws_network_acl" "public" {
     to_port    = 443
   }
 
-  # Egress: 1.6 Allow responses back to clients
+  # Egress: 1.6 Allow responses back to clients/cloudfront 
   egress {
     rule_no    = 100
     protocol   = "tcp"
@@ -208,6 +208,7 @@ resource "aws_network_acl" "private" {
     Name = "private-nacl"
   }
 }
+
 
 
 
