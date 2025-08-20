@@ -160,8 +160,8 @@ resource "aws_network_acl" "private" {
     protocol   = "tcp"
     action     = "allow"
     cidr_block = var.vpc_cidr_block
-    from_port  = 443
-    to_port    = 443
+    from_port  = 1024
+    to_port    = 65535
   }
 
     ingress {
@@ -209,6 +209,7 @@ resource "aws_network_acl" "private" {
     Name = "private-nacl"
   }
 }
+
 
 
 
