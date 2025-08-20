@@ -49,7 +49,7 @@ resource "aws_network_acl" "public" {
     to_port    = 443
   }
 
-  # Ingress: 1.5 Allow incoming responses to clients   
+  # 1.5 Ingress: Allow incoming responses to clients   
   ingress {
     rule_no    = 100
     protocol   = "tcp"
@@ -81,7 +81,7 @@ resource "aws_network_acl" "public" {
     to_port    = 65535
   }
 
-  # Egress: 1.2 Allow alb to pods 
+  # 1.2 Egress: Allow alb to pods 
   egress {
     rule_no    = 100
     protocol   = "tcp"
@@ -102,7 +102,7 @@ resource "aws_network_acl" "public" {
     to_port    = 443
   }
 
-  # Egress: 1.6 Allow responses back to clients/cloudfront 
+  # 1.6 Egress: Allow responses back to clients/cloudfront 
   egress {
     rule_no    = 100
     protocol   = "tcp"
@@ -134,7 +134,7 @@ resource "aws_network_acl" "private" {
   vpc_id     = module.vpc.vpc_id
   subnet_ids = module.vpc.private_subnets
 
-  # Ingress: 1.3 Allow ALB to pods 
+  # 1.3 Ingress: Allow ALB to pods 
   ingress {
     rule_no    = 100
     protocol   = "tcp"
@@ -174,7 +174,7 @@ resource "aws_network_acl" "private" {
   
 
 
-  # Egress: 1.4 Allow pod responses to ALB/clients and port 10250
+  # 1.4 Egress: Allow pod responses to ALB/clients and port 10250
   egress {
     rule_no    = 100
     protocol   = "tcp"
@@ -208,33 +208,6 @@ resource "aws_network_acl" "private" {
     Name = "private-nacl"
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
