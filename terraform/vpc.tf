@@ -154,6 +154,7 @@ resource "aws_network_acl" "private" {
     to_port    = 65535
   }
 
+  # 3.2 Ingress: Allow return eks control plane/dynamodb traffic 
   ingress {
     rule_no    = 110
     protocol   = "tcp"
@@ -184,7 +185,7 @@ resource "aws_network_acl" "private" {
     to_port    = 65535
   }
 
-  # Egress: Allow to EKS control plane/DynamoDB endpoints (HTTPS:443)
+  # 3.1 Egress: Allow to EKS control plane/DynamoDB endpoints (HTTPS:443)
   egress {
     rule_no    = 110
     protocol   = "tcp"
@@ -208,6 +209,7 @@ resource "aws_network_acl" "private" {
     Name = "private-nacl"
   }
 }
+
 
 
 
