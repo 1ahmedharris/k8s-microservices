@@ -71,7 +71,7 @@ resource "aws_network_acl" "public" {
     to_port    = 65535
   }
 
-  # Ingress: 2.2 Allow updates/aws services api calls 
+  # 2.2 Ingress: Allow updates/aws services api calls 
   ingress {
     rule_no    = 110
     protocol   = "tcp"
@@ -92,7 +92,7 @@ resource "aws_network_acl" "public" {
   }
 
 
-  # Egress: 2.3 Allow updates/api calls to aws services 
+  # 2.3 Egress: Allow updates/api calls to aws services 
   egress {
     rule_no    = 110
     protocol   = "tcp"
@@ -112,7 +112,7 @@ resource "aws_network_acl" "public" {
     to_port    = 65535
   }
 
-  Egress: 2.5 Allow responses from updates/api calls
+  # 2.5 Egress: Allow responses from updates/api calls
   egress {
     rule_no    = 110
     protocol   = "tcp"
@@ -144,7 +144,7 @@ resource "aws_network_acl" "private" {
     to_port    = 80
   }
 
-  # Ingress: 2.6 Allow responses from updates/aws services  
+  # 2.6 Ingress: Allow responses from updates/aws services  
   ingress {
     rule_no    = 130
     protocol   = "tcp"
@@ -208,6 +208,7 @@ resource "aws_network_acl" "private" {
     Name = "private-nacl"
   }
 }
+
 
 
 
