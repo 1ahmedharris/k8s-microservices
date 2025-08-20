@@ -39,7 +39,7 @@ resource "aws_network_acl" "public" {
   vpc_id     = module.vpc.vpc_id
   subnet_ids = module.vpc.public_subnets
 
-  # 1.1 Ingress: Allow HTTPS from clients/cloudfront to ALB
+  # 1.1 Ingress: Allow requests from clients/cloudfront to ALB
   ingress {
     rule_no    = 100
     protocol   = "tcp"
@@ -208,6 +208,7 @@ resource "aws_network_acl" "private" {
     Name = "private-nacl"
   }
 }
+
 
 
 
