@@ -154,7 +154,7 @@ resource "aws_network_acl" "private" {
     to_port    = 65535
   }
 
-  # Ingress: Allow return kubelet traffic  
+  # Ingress: Allow return eks api server/control plane traffic  
     ingress {
     rule_no    = 110
     protocol   = "tcp"
@@ -186,7 +186,7 @@ resource "aws_network_acl" "private" {
     to_port    = 443
   }
 
-  # 3.1 Egress: Allow to eks control plane and dynamodb endpoints 
+  # 3.1 Egress: Allow to eks api server/control plane and dynamodb endpoints 
   egress {
     rule_no    = 110
     protocol   = "tcp"
@@ -201,6 +201,7 @@ resource "aws_network_acl" "private" {
     Name = "private-nacl"
   }
 }
+
 
 
 
