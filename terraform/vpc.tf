@@ -49,7 +49,8 @@ resource "aws_network_acl" "public" {
     to_port    = 443
   }
 
-  # Ingress: 1.5 Allow incoming responses to clients   ingress {
+  # Ingress: 1.5 Allow incoming responses to clients   
+  ingress {
     rule_no    = 100
     protocol   = "tcp"
     action     = "allow"
@@ -207,6 +208,7 @@ resource "aws_network_acl" "private" {
     Name = "private-nacl"
   }
 }
+
 
 
 
