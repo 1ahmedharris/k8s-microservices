@@ -144,7 +144,7 @@ resource "aws_network_acl" "private" {
     to_port    = 80
   }
 
-  # 2.6, 3.2, 4.2 Ingress: Allow responses from eks control plane, dynamodb, updates, aws services, kubelet  
+  # 2.6, 3.2, 4.2, 5.2: Allow return traffic from eks api server, dynamodb, aws services, updates  
   ingress {
     rule_no    = 130
     protocol   = "tcp"
@@ -186,7 +186,7 @@ resource "aws_network_acl" "private" {
     to_port    = 443
   }
 
-  # 3.1 Egress: Allow to eks api server/control plane and dynamodb endpoints 
+  # 3.1, 5.1: Allow pod to eks api server, lambda, dynamodb endpoints 
   egress {
     rule_no    = 110
     protocol   = "tcp"
@@ -201,6 +201,7 @@ resource "aws_network_acl" "private" {
     Name = "private-nacl"
   }
 }
+
 
 
 
