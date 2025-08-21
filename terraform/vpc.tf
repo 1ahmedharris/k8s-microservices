@@ -153,7 +153,7 @@ resource "aws_network_acl" "private" {
     to_port    = 65535
   }
 
-  # Ingress: Allow return eks api server/control plane traffic  
+  # 5.3: Allow return traffic eks api server/control plane 
     ingress {
     rule_no    = 110
     protocol   = "tcp"
@@ -199,6 +199,7 @@ resource "aws_network_acl" "private" {
     Name = "private-nacl"
   }
 }
+
 
 
 
