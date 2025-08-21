@@ -39,7 +39,7 @@ resource "aws_network_acl" "public" {
   vpc_id     = module.vpc.vpc_id
   subnet_ids = module.vpc.public_subnets
 
-  # 1.1 Ingress: Allow requests from clients/cloudfront to ALB
+  # 1.1: Allow requests from clients/cloudfront to alb
   ingress {
     rule_no    = 100
     protocol   = "tcp"
@@ -49,7 +49,7 @@ resource "aws_network_acl" "public" {
     to_port    = 443
   }
 
-  # 1.5 Ingress: Allow incoming responses to clients   
+  # 1.5: Allow pod to alb return traffic to clients   
   ingress {
     rule_no    = 100
     protocol   = "tcp"
@@ -59,19 +59,7 @@ resource "aws_network_acl" "public" {
     to_port    = 65535
   }
 
-  # ADD 2.2 INGRESS FROM PRIVATE SUBNETS HEADED TO EGRESS/PUBLIC SUBNETS
-  # ADD 2.3 EGRESS FOR API CALL FROM PUBLIC SUBNETS
-  # Ingress: *2.4 Allow inbound responses from updates/api calls to aws services
-  ingress {
-    rule_no    = 110
-    protocol   = "tcp"
-    action     = "allow"
-    cidr_block = "0.0.0.0/0"
-    from_port  = 1024
-    to_port    = 65535
-  }
-
-  # 2.2 Ingress: Allow updates/aws services api calls 
+  # 2.2: Allow api calls to aws services and updates 
   ingress {
     rule_no    = 110
     protocol   = "tcp"
@@ -81,7 +69,19 @@ resource "aws_network_acl" "public" {
     to_port    = 65535
   }
 
-  # 1.2 Egress: Allow alb to pods 
+  # 2.4: Allow return traffic from api calls to aws services and updates
+  ingress {
+    rule_no    = 110
+    protocol   = "tcp"
+    action     = "allow"
+    cidr_block = "0.0.0.0/0"
+    from_port  = 1024
+    to_port    = 65535
+  }
+
+
+
+  # 1.2: Allow alb to pods 
   egress {
     rule_no    = 100
     protocol   = "tcp"
@@ -91,18 +91,7 @@ resource "aws_network_acl" "public" {
     to_port    = 80
   }
 
-
-  # 2.3 Egress: Allow updates/api calls to aws services 
-  egress {
-    rule_no    = 110
-    protocol   = "tcp"
-    action     = "allow"
-    cidr_block = "0.0.0.0/0"
-    from_port  = 443
-    to_port    = 443
-  }
-
-  # 1.6 Egress: Allow responses back to clients/cloudfront 
+  # 1.6: Allow ruturn traffic to clients/cloudfront 
   egress {
     rule_no    = 100
     protocol   = "tcp"
@@ -112,7 +101,17 @@ resource "aws_network_acl" "public" {
     to_port    = 65535
   }
 
-  # 2.5 Egress: Allow responses from updates/api calls
+  # 2.3: Allow api calls to aws services and updates 
+  egress {
+    rule_no    = 110
+    protocol   = "tcp"
+    action     = "allow"
+    cidr_block = "0.0.0.0/0"
+    from_port  = 443
+    to_port    = 443
+  }
+
+  # 2.5: Allow return traffic from api calls to aws services and updates
   egress {
     rule_no    = 110
     protocol   = "tcp"
@@ -122,19 +121,19 @@ resource "aws_network_acl" "public" {
     to_port    = 65535
   }
 
-
-
   tags = {
     Name = "public-nacl"
   }
 }
+
+
 
 # PRIVATE SUBNET NACL
 resource "aws_network_acl" "private" {
   vpc_id     = module.vpc.vpc_id
   subnet_ids = module.vpc.private_subnets
 
-  # 1.3 Ingress: Allow ALB to pods 
+  # 1.3: Allow alb to pods 
   ingress {
     rule_no    = 100
     protocol   = "tcp"
@@ -165,8 +164,7 @@ resource "aws_network_acl" "private" {
   }
   
 
-
-  # 1.4, 4.1  Egress: Allow pod responses to alb/clients and kubelet port 10250 to eks control plane 
+  # 1.4, 4.1: Allow pod return traffic to alb/clients and kubelet port 10250 to eks control plane 
   egress {
     rule_no    = 100
     protocol   = "tcp"
@@ -176,7 +174,7 @@ resource "aws_network_acl" "private" {
     to_port    = 65535
   }
 
-  # 2.1 Egress: Allow outbound traffic for external updates and api calls to AWS services 
+  # 2.1: Allow api calls to aws services and updates 
   egress {
     rule_no    = 100
     protocol   = "tcp"
@@ -201,20 +199,6 @@ resource "aws_network_acl" "private" {
     Name = "private-nacl"
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
