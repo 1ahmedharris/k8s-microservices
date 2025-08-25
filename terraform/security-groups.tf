@@ -138,37 +138,3 @@ module "cluster_sg" {
     Name = "${var.cluster_name}-cluster-sg"
   }
 }
-
-# DynamoDB Gateway VPC Endpoint Security Group
-module "dynamodb_endpoint_sg" {
-  source  = "terraform-aws-modules/security-group/aws"
-  version = "5.2.0"
-
-  name        = "${var.cluster_name}-dynamodb-endpoint-sg"
-  description = "Security group for DynamoDB Gateway VPC Endpoint"
-  vpc_id      = module.vpc.vpc_id
-
-  ingress_with_source_security_group_id = [
-    {
-      description              = "Allow HTTPS from EKS nodes"
-      from_port                = 443
-      to_port                  = 443
-      protocol                 = "tcp"
-      source_security_group_id = module.node_group_sg.security_group_id
-    }
-  ]
-
-  egress_with_cidr_blocks = [
-    {
-      description = "Allow HTTPS to DynamoDB"
-      from_port   = 443
-      to_port     = 443
-      protocol    = "tcp"
-      cidr_blocks = [var.vpc_cidr_block]
-    }
-  ]
-
-  tags = {
-    Name = "${var.cluster_name}-dynamodb-endpoint-sg"
-  }
-}
