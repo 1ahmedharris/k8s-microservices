@@ -1,5 +1,5 @@
 # EKS Managed Node Group Security Group
-module "eks_node_group_sg" {
+module "node_group_sg" {
   source  = "terraform-aws-modules/security-group/aws"
   version = "5.2.0"
 
@@ -20,14 +20,14 @@ module "eks_node_group_sg" {
       from_port                = 443
       to_port                  = 443
       protocol                 = "tcp"
-      source_security_group_id = module.eks_cluster_sg.security_group_id
+      source_security_group_id = module.cluster_sg.security_group_id
     },
     {
       description              = "Allow kubelet from EKS control plane"
       from_port                = 10250
       to_port                  = 10250
       protocol                 = "tcp"
-      source_security_group_id = module.eks_cluster_sg.security_group_id
+      source_security_group_id = module.cluster_sg.security_group_id
     }
   ]
 
@@ -44,7 +44,7 @@ module "eks_node_group_sg" {
       from_port   = 443
       to_port     = 443
       protocol    = "tcp"
-      cidr_blocks = module.eks_cluster_sg.security_group_id
+      cidr_blocks = module.cluster_sg.security_group_id
     },
     {
       description = "Allow HTTPS to NAT Gateway for ECR/updates"
@@ -85,7 +85,7 @@ module "alb_sg" {
       from_port                = 80
       to_port                  = 80
       protocol                 = "tcp"
-      source_security_group_id = module.eks_node_group_sg.security_group_id
+      source_security_group_id = module.node_group_sg.security_group_id
     }
   ]
 
@@ -96,7 +96,7 @@ module "alb_sg" {
 
 
 # EKS Cluster Control Plane Security Group
-module "eks_cluster_sg" {
+module "cluster_sg" {
   source  = "terraform-aws-modules/security-group/aws"
   version = "5.2.0"
 
@@ -110,7 +110,7 @@ module "eks_cluster_sg" {
       from_port                = 443
       to_port                  = 443
       protocol                 = "tcp"
-      source_security_group_id = module.eks_node_group_sg.security_group_id
+      source_security_group_id = module.node_group_sg.security_group_id
     }
   ]
 
@@ -120,14 +120,14 @@ module "eks_cluster_sg" {
       from_port                = 443
       to_port                  = 443
       protocol                 = "tcp"
-      source_security_group_id = module.eks_node_group_sg.security_group_id
+      source_security_group_id = module.node_group_sg.security_group_id
     },
     {
       description              = "Allow kubelet to EKS nodes"
       from_port                = 10250
       to_port                  = 10250
       protocol                 = "tcp"
-      source_security_group_id = module.eks_node_group_sg.security_group_id
+      source_security_group_id = module.node_group_sg.security_group_id
     }
   ]
 
@@ -151,7 +151,7 @@ module "dynamodb_endpoint_sg" {
       from_port                = 443
       to_port                  = 443
       protocol                 = "tcp"
-      source_security_group_id = module.eks_node_group_sg.security_group_id
+      source_security_group_id = module.node_group_sg.security_group_id
     }
   ]
 
