@@ -2,10 +2,6 @@ data "aws_iam_policy" "lambda_basic_execution_policy" {
   name = "AWSLambdaBasicExecutionRole"
 }
 
-data "aws_iam_policy" "lambda_vpc_access_policy" {
-  name = "AWSLambdaVPCAccessExecutionRole"
-}
-
 resource "aws_iam_role" "lambda_role" {
   name = "lambda-role"
 
@@ -47,11 +43,6 @@ resource "aws_iam_role_policy_attachment" "lambda_basic_execution" {
   policy_arn = data.aws_iam_policy.lambda_basic_execution_policy.arn
 }
 
-resource "aws_iam_role_policy_attachment" "lambda_vpc_access" {
-  role       = aws_iam_role.lambda_role.name
-  policy_arn = data.aws_iam_policy.lambda_vpc_access_policy.arn
-}
-
 resource "aws_cloudwatch_log_group" "lambda_counter_api_log_group" {
   name              = "/aws/lambda/aitc-lamba-function" 
   retention_in_days = 30                             
@@ -66,11 +57,6 @@ resource "aws_lambda_function" "lambda_counter_api" {
   runtime          = "python3.13"
   timeout          = 5 
   memory_size      = 128 
-
-  vpc_config {
-  subnet_ids         = module.vpc.private_subnets
-  security_group_ids = [aws_security_group.lambda_sg.id]
-  }
   
   environment {
     variables = {
@@ -119,6 +105,7 @@ output "lambda_counter_url_output" {
   value       = aws_lambda_function_url.lambda_counter_url.function_url
   description = "URL endpoint for Lambda visitor counter function."
 }
+
 
 
 
