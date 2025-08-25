@@ -80,9 +80,10 @@ resource "aws_lambda_function" "lambda_counter_api" {
 
   depends_on = [
     aws_cloudwatch_log_group.lambda_counter_api_log_group,
-    aws_iam_role.lambda_dynamodb_role,
+    aws_iam_role.lambda_role,
     aws_iam_role_policy.lambda_counter_policy,
-    aws_iam_role_policy_attachment.lambda_execution_role_policy_attachment,
+    aws_iam_role_policy_attachment.lambda_basic_execution,
+    aws_iam_role_policy_attachment.lambda_vpc_access,
   ]
 }
 
@@ -118,6 +119,7 @@ output "lambda_counter_url_output" {
   value       = aws_lambda_function_url.lambda_counter_url.function_url
   description = "URL endpoint for Lambda visitor counter function."
 }
+
 
 
 
