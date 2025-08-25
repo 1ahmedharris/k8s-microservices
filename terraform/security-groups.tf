@@ -78,7 +78,7 @@ module "eks_node_group_sg" {
       from_port   = 80
       to_port     = 80
       protocol    = "tcp"
-      cidr_blocks = [var.vpc_cidr_block]
+      cidr_blocks =module.alb_sg.security_group_id
     },
     {
       description = "Allow HTTPS to EKS control plane and DynamoDB endpoint"
