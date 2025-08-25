@@ -1,44 +1,3 @@
-# EKS Cluster Control Plane Security Group
-module "eks_cluster_sg" {
-  source  = "terraform-aws-modules/security-group/aws"
-  version = "5.2.0"
-
-  name        = "${var.cluster_name}-cluster-sg"
-  description = "Security group for EKS cluster control plane"
-  vpc_id      = module.vpc.vpc_id
-
-  ingress_with_source_security_group_id = [
-    {
-      description              = "Allow HTTPS from EKS nodes"
-      from_port                = 443
-      to_port                  = 443
-      protocol                 = "tcp"
-      source_security_group_id = module.eks_node_group_sg.security_group_id
-    }
-  ]
-
-  egress_with_source_security_group_id = [
-    {
-      description              = "Allow HTTPS to EKS nodes"
-      from_port                = 443
-      to_port                  = 443
-      protocol                 = "tcp"
-      source_security_group_id = module.eks_node_group_sg.security_group_id
-    },
-    {
-      description              = "Allow kubelet to EKS nodes"
-      from_port                = 10250
-      to_port                  = 10250
-      protocol                 = "tcp"
-      source_security_group_id = module.eks_node_group_sg.security_group_id
-    }
-  ]
-
-  tags = {
-    Name = "${var.cluster_name}-cluster-sg"
-  }
-}
-
 # EKS Managed Node Group Security Group
 module "eks_node_group_sg" {
   source  = "terraform-aws-modules/security-group/aws"
@@ -132,6 +91,48 @@ module "alb_sg" {
 
   tags = {
     Name = "${var.cluster_name}-alb-sg"
+  }
+}
+
+
+# EKS Cluster Control Plane Security Group
+module "eks_cluster_sg" {
+  source  = "terraform-aws-modules/security-group/aws"
+  version = "5.2.0"
+
+  name        = "${var.cluster_name}-cluster-sg"
+  description = "Security group for EKS cluster control plane"
+  vpc_id      = module.vpc.vpc_id
+
+  ingress_with_source_security_group_id = [
+    {
+      description              = "Allow HTTPS from EKS nodes"
+      from_port                = 443
+      to_port                  = 443
+      protocol                 = "tcp"
+      source_security_group_id = module.eks_node_group_sg.security_group_id
+    }
+  ]
+
+  egress_with_source_security_group_id = [
+    {
+      description              = "Allow HTTPS to EKS nodes"
+      from_port                = 443
+      to_port                  = 443
+      protocol                 = "tcp"
+      source_security_group_id = module.eks_node_group_sg.security_group_id
+    },
+    {
+      description              = "Allow kubelet to EKS nodes"
+      from_port                = 10250
+      to_port                  = 10250
+      protocol                 = "tcp"
+      source_security_group_id = module.eks_node_group_sg.security_group_id
+    }
+  ]
+
+  tags = {
+    Name = "${var.cluster_name}-cluster-sg"
   }
 }
 
