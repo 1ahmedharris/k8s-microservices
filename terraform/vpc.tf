@@ -19,9 +19,6 @@ module "vpc" {
   enable_nat_gateway   = true
   single_nat_gateway   = true
 
-  enable_dynamodb_endpoint = true
-
-
   public_subnet_tags = {
     "kubernetes.io/cluster/${var.cluster_name}" = "shared"
     "kubernetes.io/role/elb"                    = "1"
@@ -199,6 +196,7 @@ resource "aws_network_acl" "private" {
     Name = "private-nacl"
   }
 }
+
 
 
 
