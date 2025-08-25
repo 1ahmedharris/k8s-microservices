@@ -31,7 +31,7 @@ module "node_group_sg" {
     }
   ]
 
-  egress_with_cidr_blocks = [
+  egress_with_source_security_group_id = [
     {
       description = "Allow HTTP to ALB"
       from_port   = 80
@@ -46,6 +46,9 @@ module "node_group_sg" {
       protocol    = "tcp"
       cidr_blocks = module.cluster_sg.security_group_id
     },
+  ]
+
+  egress_with_cidr_blocks = [
     {
       description = "Allow HTTPS to NAT Gateway for ECR/updates"
       from_port   = 443
