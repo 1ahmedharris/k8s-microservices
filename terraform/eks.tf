@@ -1,17 +1,13 @@
-module "eks_cluster" { # Assuming your main EKS module instance is named "eks_cluster"
-  source  = "terraform-aws-modules/eks/aws"
-  version = "~> 20.0" # IMPORTANT: Always specify the exact module version you are using
-
-  cluster_name = "my-cloud-resume-cluster" # Replace with your actual cluster name
-  cluster_version = "1.30" # Specify your desired Kubernetes version
-
-  vpc_id       = module.vpc.vpc_id       # Assuming you have a VPC module outputting vpc_id
-  subnet_ids   = module.vpc.private_subnets # Assuming you have private subnets from your VPC module
+module "eks_cluster" { 
+  source           = "terraform-aws-modules/eks/aws"
+  version          = "~> 21.1.0"  
+  cluster_name     = "site-cluster" 
+  cluster_version  = "1.33" 
+  vpc_id           = module.vpc.vpc_id       
+  subnet_ids       = module.vpc.private_subnets
   
   cluster_endpoint_private_access = true
   
-# ... other cluster-level configurations for the EKS module (e.g., cluster_version, tags) ...
-
   # --- EKS Managed Node Group Configuration ---
   # Define managed node groups here as a map.
   # The key (e.g., "resume-app-nodes") becomes the name of node group.
@@ -55,6 +51,7 @@ module "eks_cluster" { # Assuming your main EKS module instance is named "eks_cl
     }
   }
 }
+
 
 
 
