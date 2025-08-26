@@ -13,8 +13,8 @@ module "eks_cluster" { # Assuming your main EKS module instance is named "eks_cl
 # ... other cluster-level configurations for the EKS module (e.g., cluster_version, tags) ...
 
   # --- EKS Managed Node Group Configuration ---
-  # Define your managed node groups here as a map.
-  # The key (e.g., "resume-app-nodes") becomes the name of your node group.
+  # Define managed node groups here as a map.
+  # The key (e.g., "resume-app-nodes") becomes the name of node group.
   managed_node_groups = {
     "spot-worker-nodes" = {
       # --- Instance Type Diversification (Most Important) ---
@@ -33,8 +33,11 @@ module "eks_cluster" { # Assuming your main EKS module instance is named "eks_cl
       max_size     = 4
       desired_size = 3
 
+      security_groups = [module.node_group_sg.security_group_id] # Associate node_group_sg
+    
+
       # --- Node Role ARN (Optional, if managing IAM role externally) ---
-      # If you are creating the IAM role for your EKS worker nodes outside this module
+      # If creating the IAM role for your EKS worker nodes outside this module
       # (as implied by your original `node_role_arn = aws_iam_role.resume_eks_node_role.arn`),
       # you would pass its ARN here.
       # If you omit this, the module will create and manage the node role for you (recommended).
@@ -52,6 +55,7 @@ module "eks_cluster" { # Assuming your main EKS module instance is named "eks_cl
     }
   }
 }
+
 
 
 
