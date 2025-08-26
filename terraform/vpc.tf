@@ -48,7 +48,7 @@ resource "aws_network_acl" "public" {
 
   # 1.5: Allow pod to alb return traffic to clients   
   ingress {
-    rule_no    = 100
+    rule_no    = 110
     protocol   = "tcp"
     action     = "allow"
     cidr_block = var.vpc_cidr_block
@@ -58,7 +58,7 @@ resource "aws_network_acl" "public" {
 
   # 2.2: Allow api calls to aws services and updates 
   ingress {
-    rule_no    = 110
+    rule_no    = 120
     protocol   = "tcp"
     action     = "allow"
     cidr_block = var.vpc_cidr_block
@@ -68,7 +68,7 @@ resource "aws_network_acl" "public" {
 
   # 2.4: Allow return traffic from api calls to aws services and updates
   ingress {
-    rule_no    = 110
+    rule_no    = 130
     protocol   = "tcp"
     action     = "allow"
     cidr_block = "0.0.0.0/0"
@@ -90,7 +90,7 @@ resource "aws_network_acl" "public" {
 
   # 1.6: Allow ruturn traffic to clients/cloudfront 
   egress {
-    rule_no    = 100
+    rule_no    = 110
     protocol   = "tcp"
     action     = "allow"
     cidr_block = "0.0.0.0/0"
@@ -100,7 +100,7 @@ resource "aws_network_acl" "public" {
 
   # 2.3: Allow api calls to aws services and updates 
   egress {
-    rule_no    = 110
+    rule_no    = 120
     protocol   = "tcp"
     action     = "allow"
     cidr_block = "0.0.0.0/0"
@@ -110,7 +110,7 @@ resource "aws_network_acl" "public" {
 
   # 2.5: Allow return traffic from api calls to aws services and updates
   egress {
-    rule_no    = 110
+    rule_no    = 130
     protocol   = "tcp"
     action     = "allow"
     cidr_block = "var.vpc_cidr_block"
@@ -142,7 +142,7 @@ resource "aws_network_acl" "private" {
 
   # 2.6, 3.2, 4.2, 5.2: Allow return traffic from eks api server, dynamodb, aws services, updates  
   ingress {
-    rule_no    = 130
+    rule_no    = 110
     protocol   = "tcp"
     action     = "allow"
     cidr_block = var.vpc_cidr_block
@@ -152,7 +152,7 @@ resource "aws_network_acl" "private" {
 
   # 5.3: Allow return traffic eks api server/control plane 
     ingress {
-    rule_no    = 110
+    rule_no    = 120
     protocol   = "tcp"
     action     = "allow"
     cidr_block = var.vpc_cidr_block
@@ -173,7 +173,7 @@ resource "aws_network_acl" "private" {
 
   # 2.1: Allow api calls to aws services and updates 
   egress {
-    rule_no    = 100
+    rule_no    = 110
     protocol   = "tcp"
     action     = "allow"
     cidr_block = "0.0.0.0/0"   
@@ -183,7 +183,7 @@ resource "aws_network_acl" "private" {
 
   # 3.1, 5.1: Allow pod to eks api server, lambda, dynamodb endpoints 
   egress {
-    rule_no    = 110
+    rule_no    = 120
     protocol   = "tcp"
     action     = "allow"
     cidr_block = var.vpc_cidr_block
@@ -196,6 +196,7 @@ resource "aws_network_acl" "private" {
     Name = "private-nacl"
   }
 }
+
 
 
 
