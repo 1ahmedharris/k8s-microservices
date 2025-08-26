@@ -1,23 +1,20 @@
-# v4
-
-
 data "aws_availability_zones" "azs" {}
 
 module "vpc" {
-  source  = "terraform-aws-modules/vpc/aws"
-  version = "6.0.0"
-  name    = "eks-vpc"
+  source          = "terraform-aws-modules/vpc/aws"
+  version         = "6.0.0"
+  name            = "eks-vpc"
 
   cidr            = var.vpc_cidr_block
   azs             = data.aws_availability_zones.azs.names[0:3]
   public_subnets  = var.public_subnet_cidr_blocks
   private_subnets = var.private_subnet_cidr_blocks
 
-  enable_dns_hostnames = true
-  enable_dns_support   = true
+  enable_dns_hostnames   = true
+  enable_dns_support     = true  
   
-  enable_nat_gateway   = true
-  single_nat_gateway   = true
+  enable_nat_gateway     = true
+  single_nat_gateway     = true
 
   public_subnet_tags = {
     "kubernetes.io/cluster/${var.cluster_name}" = "shared"
@@ -196,6 +193,7 @@ resource "aws_network_acl" "private" {
     Name = "private-nacl"
   }
 }
+
 
 
 
