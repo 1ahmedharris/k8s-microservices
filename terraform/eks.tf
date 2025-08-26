@@ -1,8 +1,8 @@
 module "eks_cluster" { 
   source              = "terraform-aws-modules/eks/aws"
-  version             = "~> 21.1.0"  
-  cluster_name        = "site-cluster" 
+  version             = "~> 21.1.0"   
   kubernetes_version  = "1.33" 
+  cluster_name        = "site-cluster"
   vpc_id              = module.vpc.vpc_id       
   subnet_ids          = module.vpc.private_subnets
   
@@ -51,6 +51,7 @@ module "eks_cluster" {
     }
   }
 }
+
 
 
 
