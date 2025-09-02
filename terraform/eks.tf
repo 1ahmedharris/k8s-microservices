@@ -7,12 +7,21 @@ module "eks_cluster" {
   subnet_ids          = module.vpc.private_subnets
   
   cluster_endpoint_private_access = true
+
+  cluster_addons = {
+    coredns = {
+      most_recent = true
+    }
+    kube-proxy = {
+      most_recent = true
+    }
+  }
   
   # --- EKS Managed Node Group Configuration ---
   # Define managed node groups here as a map.
   # The key (e.g., "resume-app-nodes") becomes the name of node group.
 
-  managed_node_groups = {
+  eks_managed_node_groups = {
     "worker-nodes" = {
       instance_types  = ["t4g.small"]
       capacity_type   = "ON_DEMAND"
@@ -25,6 +34,7 @@ module "eks_cluster" {
     }
   }
 }
+
 
 
 
