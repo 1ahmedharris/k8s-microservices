@@ -4,7 +4,7 @@ module "eks_cluster" {
   kubernetes_version      = "1.33" 
   name                    = "site-cluster"
   vpc_id                  = module.vpc.vpc_id       
-  subnet_ids              = module.vpc.private_subnets
+  subnet_ids              = module.vpc.private_subnets # provisions for cross-account ENIs in private subnets 
   endpoint_private_access = true
 
   cluster_addons = {
@@ -33,6 +33,7 @@ module "eks_cluster" {
     }
   }
 }
+
 
 
 
