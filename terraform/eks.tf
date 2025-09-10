@@ -28,11 +28,13 @@ module "eks_cluster" {
       min_size        = 1
       max_size        = 2
       desired_size    = 1
+      subnet_ids      = module.vpc.private_subnets
       security_groups = [module.node_group_sg.security_group_id]
       # node_role_arn = aws_iam_role.resume_eks_node_role.arn 
     }
   }
 }
+
 
 
 
