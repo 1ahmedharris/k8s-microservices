@@ -24,7 +24,7 @@ module "eks_cluster" {
     "worker-nodes" = {
       instance_types  = ["t4g.small"]
       capacity_type   = "ON_DEMAND"
-      ami_type        = "AL2_ARM_64"
+      ami_type        = "AL2023_ARM_64_STANDARD"
       min_size        = 1
       max_size        = 2
       desired_size    = 1
@@ -34,6 +34,7 @@ module "eks_cluster" {
     }
   }
 }
+
 
 
 
