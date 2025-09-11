@@ -16,9 +16,6 @@ module "eks_cluster" {
     }
   }
   
-  # --- EKS Managed Node Group Configuration ---
-  # Define managed node groups here as a map.
-  # The key (e.g., "resume-app-nodes") becomes the name of node group.
 
   eks_managed_node_groups = {
     "worker-nodes" = {
@@ -34,6 +31,7 @@ module "eks_cluster" {
     }
   }
 }
+
 
 
 
