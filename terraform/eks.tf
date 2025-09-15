@@ -1,11 +1,9 @@
 resource "aws_launch_template" "t4g_standard_burst" {
-  name_prefix   = "site-t4g-standard-burst-"
+  name_prefix            = "site-t4g-standard-burst-"
 
   credit_specification {
     cpu_credits = "standard"
   }
-
-  vpc_security_group_ids = [module.node_group_sg.security_group_id]
 }
 
 
@@ -30,36 +28,16 @@ module "eks_cluster" {
 
   eks_managed_node_groups = {
     "worker-nodes" = {
-      instance_types  = ["t4g.small"]
-      capacity_type   = "ON_DEMAND"
-      ami_type        = "AL2023_ARM_64_STANDARD"
-      min_size        = 1
-      max_size        = 2
-      desired_size    = 1
-      subnet_ids      = module.vpc.private_subnets
-      security_groups = [module.node_group_sg.security_group_id]
-      launch_template_id = aws_launch_template.t4g_standard_burst.id
-      # node_role_arn = aws_iam_role.resume_eks_node_role.arn 
-      
+      instance_types       = ["t4g.small"]
+      capacity_type        = "ON_DEMAND"
+      ami_type             = "AL2023_ARM_64_STANDARD"
+      min_size             = 1
+      max_size             = 2
+      desired_size         = 1
+      subnet_ids           = module.vpc.private_subnets
+      security_groups      = [module.node_group_sg.security_group_id]
+      launch_template_id   = aws_launch_template.t4g_standard_burst.id
+      # node_role_arn      = aws_iam_role.resume_eks_node_role.arn      
     }
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
