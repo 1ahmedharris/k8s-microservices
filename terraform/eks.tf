@@ -9,7 +9,7 @@ resource "aws_launch_template" "t4g_standard_burst" {
 
 module "eks_cluster" { 
   source                  = "terraform-aws-modules/eks/aws"
-  version                 = "~> 21.1.0"   
+  version                 = "~> 21.1.0" # Terraform version 
   kubernetes_version      = "1.33" 
   name                    = "site-cluster"
   vpc_id                  = module.vpc.vpc_id       
@@ -41,3 +41,4 @@ module "eks_cluster" {
     }
   }
 }
+
