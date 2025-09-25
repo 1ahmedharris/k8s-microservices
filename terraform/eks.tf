@@ -35,16 +35,17 @@ module "eks_cluster" {
       min_size                          = 1
       max_size                          = 2
       desired_size                      = 1
+      #disk_size                        = 20
       subnet_ids                        = module.vpc.private_subnets
       vpc_security_group_ids            = [module.node_group_sg.security_group_id]
       cluster_primary_security_group_id = module.eks_cluster.cluster_primary_security_group_id
       launch_template_id                = aws_launch_template.t4g_standard_burst.id
       create_iam_role                   = false
       node_role_arn                     = aws_iam_role.eks_node_role.arn      
-      #disk_size                        = ?
     }
   }
 }
+
 
 
 
