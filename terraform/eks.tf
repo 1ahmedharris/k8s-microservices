@@ -8,13 +8,14 @@ resource "aws_launch_template" "t4g_standard_burst" {
 
 
 module "eks_cluster" { 
-  source                  = "terraform-aws-modules/eks/aws"
-  version                 = "~> 21.1.0" # Terraform version 
-  kubernetes_version      = "1.33" 
-  name                    = "site-cluster"
-  vpc_id                  = module.vpc.vpc_id       
-  subnet_ids              = module.vpc.private_subnets # provisions for control plane cross-account ENIs in private subnets 
-  endpoint_private_access = true
+  source                        = "terraform-aws-modules/eks/aws"
+  version                       = "~> 21.1.0" # Terraform version 
+  kubernetes_version            = "1.33" 
+  name                          = "site-cluster"
+  vpc_id                        = module.vpc.vpc_id       
+  subnet_ids                    = module.vpc.private_subnets # provisions for control plane ENIs in private subnets 
+  additional_security_group_ids = [module.cluster_sg.security_group_id] # Attach security_groups.tf cluster_sg 
+  endpoint_private_access       = true
 
   cluster_addons = {
     coredns = {
@@ -44,6 +45,7 @@ module "eks_cluster" {
     }
   }
 }
+
 
 
 
