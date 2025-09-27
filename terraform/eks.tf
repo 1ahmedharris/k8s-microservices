@@ -34,14 +34,10 @@ module "eks_cluster" {
 
 
   addons = {
-    coredns = {
-      most_recent = true
-    }
-    kube-proxy = {
-      most_recent = true
-    }
+    coredns = {}
+    kube-proxy = {}
     vpc-cni = {
-      most_recent = true
+      before_compute = true
     }
   }
   
@@ -64,6 +60,7 @@ module "eks_cluster" {
     }
   }
 }
+
 
 
 
