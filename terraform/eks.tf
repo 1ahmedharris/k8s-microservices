@@ -39,7 +39,7 @@ module "eks_cluster" {
       min_size                          = 1
       max_size                          = 2
       desired_size                      = 1
-      disk_size                        = 20
+      disk_size                         = 20
       subnet_ids                        = module.vpc.private_subnets
       vpc_security_group_ids            = [module.node_group_sg.security_group_id]
       cluster_primary_security_group_id = module.eks_cluster.cluster_primary_security_group_id
@@ -49,5 +49,6 @@ module "eks_cluster" {
     }
   }
 }
+
 
 
