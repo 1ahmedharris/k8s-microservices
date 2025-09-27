@@ -1,6 +1,13 @@
 resource "aws_launch_template" "t4g_standard_burst" {
   name_prefix            = "site-t4g-standard-burst-"
 
+  block_device_mappings {
+    device_name = "/dev/sda1"  # Root volume mapping 
+    ebs {
+      delete_on_termination = true
+    }
+  }
+
   credit_specification {
     cpu_credits = "standard"
   }
@@ -57,6 +64,7 @@ module "eks_cluster" {
     }
   }
 }
+
 
 
 
