@@ -30,7 +30,7 @@ module "eks_cluster" {
     # "MY.LOCAL.IP/32",        
     # "192.30.252.0/22", # GitHub Actions IP ranges
     # "185.199.108.0/22" # GitHub Actions IP ranges
- # ]
+  # ]
 
 
   addons = {
@@ -60,6 +60,7 @@ module "eks_cluster" {
     }
   }
 }
+
 
 
 
