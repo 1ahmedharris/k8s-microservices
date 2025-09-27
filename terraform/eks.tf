@@ -21,8 +21,8 @@ module "eks_cluster" {
   # API server kubectl access/testing  
   # endpoint_public_access_cidrs = [
     # "MY.LOCAL.IP/32",        
-    # "192.30.252.0/22",        # GitHub Actions IP ranges
-    # "185.199.108.0/22"        # GitHub Actions IP ranges
+    # "192.30.252.0/22", # GitHub Actions IP ranges
+    # "185.199.108.0/22" # GitHub Actions IP ranges
  # ]
 
 
@@ -57,6 +57,7 @@ module "eks_cluster" {
     }
   }
 }
+
 
 
 
