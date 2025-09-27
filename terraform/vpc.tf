@@ -6,7 +6,7 @@ module "vpc" {
   name            = "eks-vpc"
 
   cidr            = var.vpc_cidr_block
-  azs             = data.aws_availability_zones.azs.names[0:3]
+  azs             = data.aws_availability_zones.azs.names[0:2]
   public_subnets  = var.public_subnet_cidr_blocks
   private_subnets = var.private_subnet_cidr_blocks
 
@@ -192,6 +192,7 @@ resource "aws_network_acl" "private" {
     Name = "private-nacl"
   }
 }
+
 
 
 
