@@ -18,11 +18,14 @@ module "eks_cluster" {
   endpoint_private_access       = true
   enable_irsa                   = true
 
-  cluster_addons = {
+  addons = {
     coredns = {
       most_recent = true
     }
     kube-proxy = {
+      most_recent = true
+    }
+    vpc-cni = {
       most_recent = true
     }
   }
@@ -46,4 +49,5 @@ module "eks_cluster" {
     }
   }
 }
+
 
