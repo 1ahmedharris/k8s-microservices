@@ -16,7 +16,7 @@ module "eks_cluster" {
   subnet_ids                    = module.vpc.private_subnets # provisions for control plane ENIs in private subnets 
   additional_security_group_ids = [module.cluster_sg.security_group_id] # Attach security_groups.tf cluster_sg 
   endpoint_private_access       = true
-  #enable_irsa                   = true
+  enable_irsa                   = true
 
   cluster_addons = {
     coredns = {
@@ -46,3 +46,4 @@ module "eks_cluster" {
     }
   }
 }
+
