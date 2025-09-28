@@ -2,7 +2,7 @@ data "aws_availability_zones" "azs" {}
 
 module "vpc" {
   source          = "terraform-aws-modules/vpc/aws"
-  version         = "6.0.0"
+  version         = "~> 6.3.0"
   name            = "eks-vpc"
 
   cidr            = var.vpc_cidr_block
@@ -192,6 +192,7 @@ resource "aws_network_acl" "private" {
     Name = "private-nacl"
   }
 }
+
 
 
 
