@@ -26,7 +26,7 @@ module "eks_cluster" {
   enable_irsa                   = true
 
   # API server kubectl access/testing
-  # endpoint_public_access = true    # tesing 
+  # endpoint_public_access = true    # Testing/Dev (GitHub Actions, Kubectl)
 
   # endpoint_public_access_cidrs = [
     # "MY.LOCAL.IP/32",        
@@ -62,6 +62,7 @@ module "eks_cluster" {
     }
   }
 }
+
 
 
 
