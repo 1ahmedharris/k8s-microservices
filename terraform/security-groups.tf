@@ -26,7 +26,7 @@ module "cluster_sg" {
   version         = "~> 5.3.0"
 
   name            = "${var.cluster_name}-cluster-sg"
-  description     = "Security group for alb"
+  description     = "Security group for cluster"
   vpc_id          = module.vpc.vpc_id
 }
 
