@@ -1,8 +1,5 @@
-# EKS Node Security Group
-module "node_sg" {
-  source          = "terraform-aws-modules/security-group/aws"
-  version         = "~> 5.3.0"
-
+# EKS Nodes Security Group
+resource "aws_security_group" "node_sg" {
   name            = "${var.cluster_name}-node-sg"
   description     = "Security group for EKS nodes"
   vpc_id          = module.vpc.vpc_id
@@ -10,10 +7,7 @@ module "node_sg" {
 
 
 # ALB Security Group
-module "alb_sg" {
-  source          = "terraform-aws-modules/security-group/aws"
-  version         = "~> 5.3.0"
-
+resource "aws_security_group" "alb_sg" {
   name            = "${var.cluster_name}-alb-sg"
   description     = "Security group for alb"
   vpc_id          = module.vpc.vpc_id
