@@ -14,13 +14,22 @@ resource "aws_security_group" "alb_sg" {
 }
 
 
-resource "aws_vpc_security_group_ingress_rule" "allow_http" {
+resource "aws_vpc_security_group_ingress_rule" "allow_http_ingress" {
+  security_group_id             = aws_security_group.node_sg.id
+  description                   = "Allow HTTP traffic from alb"
+  from_port                     = 80
+  to_port                       = 80
+  ip_protocol                   = "tcp"
+  referenced_security_group_id  = aws_security_group.alb_sg.id # Allows traffic from alb
+}
+
+resource "aws_vpc_security_group_egress_rule" "allow_https_egress" {
   security_group_id = aws_security_group.node_sg.id
-  description       = "Allow HTTP traffic from alb"
-  from_port         = 80
-  to_port           = 80
+  description       = "Allow node to internet egress for updates"
   ip_protocol       = "tcp"
-  cidr_ipv4         = "10.0.0.0/20" # Allows traffic from vpc
+  from_port         = 443
+  to_port           = 443
+  cidr_ipv4         = "0.0.0.0/0"
 }
 
 
