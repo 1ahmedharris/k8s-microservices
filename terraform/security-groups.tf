@@ -38,14 +38,14 @@ resource "aws_security_group" "alb_sg" {
   vpc_id          = module.vpc.vpc_id
 }
 
-# Ingress: Allow HTTPS from CloudFront, internet)
+# Ingress: Allow ingress from CloudFront managed prefix list IP's
 resource "aws_vpc_security_group_ingress_rule" "alb_cloudfront_ingress" {
   security_group_id = aws_security_group.alb_sg.id
   description       = "Allow inbound HTTPS from CloudFront managed prefix list"
   ip_protocol       = "tcp"
   from_port         = 443
   to_port           = 443
-  prefix_list_ids = [data.aws_ec2_managed_prefix_list.cloudfront.id]
+  prefix_list_ids   = [data.aws_ec2_managed_prefix_list.cloudfront.id]
 }
 
 # Egress: Allow HTTP traffic to EKS worker nodes
@@ -58,12 +58,3 @@ resource "aws_vpc_security_group_egress_rule" "alb_http_egress" {
   referenced_security_group_id = aws_security_group.node_sg.id
 }
 
-# Egress: Allow return HTTPS (if ALB needs to talk to CloudFront/AWS services)
-resource "aws_vpc_security_group_egress_rule" "alb_https_egress" {
-  security_group_id = aws_security_group.alb_sg.id
-  description       = "Allow HTTPS egress to internet (for CloudFront, ACM, health checks)"
-  ip_protocol       = "tcp"
-  from_port         = 443
-  to_port           = 443
-  cidr_ipv4         = "0.0.0.0/0"
-}
