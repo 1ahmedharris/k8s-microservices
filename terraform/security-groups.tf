@@ -1,3 +1,7 @@
+data "aws_ec2_managed_prefix_list" "cloudfront" {
+ name = "com.amazonaws.global.cloudfront.origin-facing"
+}
+
 # EKS Nodes Security Group
 resource "aws_security_group" "node_sg" {
   name            = "${var.cluster_name}-node-sg"
@@ -35,13 +39,13 @@ resource "aws_security_group" "alb_sg" {
 }
 
 # Ingress: Allow HTTPS from CloudFront, internet)
-resource "aws_vpc_security_group_ingress_rule" "alb_https_ingress" {
+resource "aws_vpc_security_group_ingress_rule" "alb_cloudfront_ingress" {
   security_group_id = aws_security_group.alb_sg.id
-  description       = "Allow inbound HTTPS from CloudFront/internet"
+  description       = "Allow inbound HTTPS from CloudFront managed prefix list"
   ip_protocol       = "tcp"
   from_port         = 443
   to_port           = 443
-  cidr_ipv4         = "0.0.0.0/0"
+  prefix_list_ids = [data.aws_ec2_managed_prefix_list.cloudfront.id]
 }
 
 # Egress: Allow HTTP traffic to EKS worker nodes
