@@ -45,7 +45,8 @@ resource "aws_vpc_security_group_ingress_rule" "alb_cloudfront_ingress" {
   ip_protocol       = "tcp"
   from_port         = 443
   to_port           = 443
-  prefix_list_ids   = [data.aws_ec2_managed_prefix_list.cloudfront.id]
+  cidr_ipv4         = "0.0.0.0/0"
+  # prefix_list_id    = [data.aws_ec2_managed_prefix_list.cloudfront.id] # Counts as 55 routes, Default quota is 50 routes Must request route table increase
 }
 
 # Egress: Allow HTTP traffic to EKS worker nodes
