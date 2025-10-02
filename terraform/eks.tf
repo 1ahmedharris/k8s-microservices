@@ -1,5 +1,5 @@
 resource "aws_launch_template" "t4g_standard_burst" {
-  name_prefix            = "site-t4g-standard-burst-"
+  name_prefix = "site-t4g-standard-burst-"
 
   block_device_mappings {
     device_name = "/dev/sda1"  # Root volume mapping 
@@ -60,15 +60,3 @@ module "eks_cluster" {
     }
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
