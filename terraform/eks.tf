@@ -36,11 +36,9 @@ module "eks_cluster" {
 
 
   addons = {
-    coredns = {}
+    coredns    = {}
     kube-proxy = {}
-    vpc-cni = {
-      before_compute = true
-    }
+    vpc-cni    = { before_compute = true }
   }
   
 
@@ -55,13 +53,14 @@ module "eks_cluster" {
       disk_size                         = 20
       subnet_ids                        = module.vpc.private_subnets
       vpc_security_group_ids            = [aws_security_group.node_sg.id]
-      cluster_primary_security_group_id = module.eks_cluster.cluster_primary_security_group_id
+      cluster_primary_security_group_id = module.eks_cluster.cluster_primary_security_group_id # Provisions eks managed security group & enables control plane to worker node communication.
       launch_template_id                = aws_launch_template.t4g_standard_burst.id
       create_iam_role                   = false
       node_role_arn                     = aws_iam_role.eks_node_role.arn      
     }
   }
 }
+
 
 
 
