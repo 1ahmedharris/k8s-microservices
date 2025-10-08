@@ -38,6 +38,7 @@ resource "aws_security_group" "alb_sg" {
   vpc_id          = module.vpc.vpc_id
 }
 
+# Provision for manual CloudFront managed prefix list, until quota increases 
 # Ingress: Allow ingress from CloudFront managed prefix list IP's
 resource "aws_vpc_security_group_ingress_rule" "alb_cloudfront_ingress" {
   security_group_id = aws_security_group.alb_sg.id
