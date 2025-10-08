@@ -4,51 +4,45 @@ metadata:
   name: resume-nginx-ingress
   annotations:
     # --- AWS Load Balancer Controller Specific Annotations ---
-    # Specifies that this Ingress should be managed by the AWS Load Balancer Controller.
+    # Specifies Ingress managed by the ALB Controller.
     kubernetes.io/ingress.class: alb
     
-    # Defines the ALB as internet-facing, meaning it will have a public IP.
-    # For internal-only access, change to 'internal'.
+    # Defines ALB as internet-facing, 
+    # If internal-only access needed, change to internal.
     alb.ingress.kubernetes.io/scheme: internet-facing
     
-    # Specifies that traffic should be routed to the Pod's IP address directly,
-    # rather than the node's IP. This is the recommended and most efficient way.
+    # Traffic should be routed to the Pod's IP address directly, not node's IP.
     alb.ingress.kubernetes.io/target-type: ip
     
-    # Specifies the listeners for the ALB.
-    # HTTP on port 80 and HTTPS on port 443.
+    # ALB listens  on port 443, forwards to port 80.
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
     
     # --- HTTPS Configuration ---
-    # REQUIRED: The ARN of your AWS Certificate Manager (ACM) SSL/TLS certificate.
-    # Replace 'arn:aws:acm:REGION:ACCOUNT_ID:certificate/YOUR_CERTIFICATE_ID'
-    # with your actual certificate ARN.
+    # ARN of my AWS Certificate Manager (ACM) SSL/TLS certificate.
     alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:REGION:ACCOUNT_ID:certificate/YOUR_CERTIFICATE_ID
     
     # --- HTTP to HTTPS Redirection (Best Practice) ---
-    # This annotation defines an action for the HTTP listener (port 80) to
+    # Defines an action for the HTTP listener (port 80) to
     # redirect all traffic to the HTTPS listener (port 443) with a 301 Permanent Redirect.
     alb.ingress.kubernetes.io/actions.ssl-redirect: '{"Type": "redirect", "RedirectConfig": { "Protocol": "HTTPS", "Port": "443", "StatusCode": "HTTP_301"}}'
 
-    # Optional: Assigns a name to the ALB for easier identification in the AWS Console.
-    # This helps group related ALBs if you have many.
-    alb.ingress.kubernetes.io/group.name: cloud-resume-alb-group
+    # Assigns name to ALB in AWS Console.
+    # alb.ingress.kubernetes.io/group.name: cloud-resume-alb-group
     
-    # Optional: Enable WAFv2 integration for additional security (if desired).
-    # alb.ingress.kubernetes.io/wafv2-acl-arn: arn:aws:wafv2:REGION:ACCOUNT_ID:webacl/YOUR_WEBACL_NAME/YOUR_WEBACL_ID
 
 spec:
   rules:
-    - host: your.domain.com # <--- REPLACE WITH YOUR ACTUAL DOMAIN NAME (e.g., www.your-resume.com)
+    - host: my.domain.com 
       http:
         paths:
           - path: /
             pathType: Prefix # Matches any URL path starting with '/'
             backend:
               service:
-                name: resume-nginx-service # Matches the name of your ClusterIP Service
+                name: resume-nginx-service # Name of your ClusterIP Service ?
                 port:
-                  number: 80 # The target port on the ClusterIP Service (which then routes to Nginx's port 80)
+                  number: 80 # Target port on  ClusterIP Service which routes to Nginx port 80
+
 
 
 
