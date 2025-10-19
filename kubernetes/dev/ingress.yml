@@ -1,35 +1,14 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: resume-nginx-ingress
+  name: alb-ingress
   annotations:
-    # --- AWS Load Balancer Controller Specific Annotations ---
-    # Specifies Ingress managed by the ALB Controller.
     kubernetes.io/ingress.class: alb
-    
-    # Defines ALB as internet-facing, 
-    # If internal-only access needed, change to internal.
     alb.ingress.kubernetes.io/scheme: internet-facing
-    
-    # Traffic should be routed to the Pod's IP address directly, not node's IP.
     alb.ingress.kubernetes.io/target-type: ip
-    
-    # ALB listens  on port 443, forwards to port 80.
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
-    
-    # --- HTTPS Configuration ---
-    # ARN of my AWS Certificate Manager (ACM) SSL/TLS certificate.
     alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:REGION:ACCOUNT_ID:certificate/YOUR_CERTIFICATE_ID
-    
-    # --- HTTP to HTTPS Redirection (Best Practice) ---
-    # Defines an action for the HTTP listener (port 80) to
-    # redirect all traffic to the HTTPS listener (port 443) with a 301 Permanent Redirect.
     alb.ingress.kubernetes.io/actions.ssl-redirect: '{"Type": "redirect", "RedirectConfig": { "Protocol": "HTTPS", "Port": "443", "StatusCode": "HTTP_301"}}'
-
-    # Assigns name to ALB in AWS Console.
-    # alb.ingress.kubernetes.io/group.name: cloud-resume-alb-group
-    
-
 spec:
   rules:
     - host: my.domain.com 
@@ -42,6 +21,7 @@ spec:
                 name: resume-nginx-service # Name of your ClusterIP Service ?
                 port:
                   number: 80 # Target port on  ClusterIP Service which routes to Nginx port 80
+
 
 
 
