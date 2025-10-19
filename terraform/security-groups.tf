@@ -38,15 +38,14 @@ resource "aws_security_group" "alb_sg" {
   vpc_id          = module.vpc.vpc_id
 }
 
-# Provision for manual CloudFront managed prefix list, until quota increases 
-# Ingress: Allow ingress from CloudFront managed prefix list IP's
+# Ingress: Allow ingress from only CloudFront managed prefix list IP ranges
 resource "aws_vpc_security_group_ingress_rule" "alb_cloudfront_ingress" {
   security_group_id = aws_security_group.alb_sg.id
   description       = "Allow inbound HTTPS from CloudFront managed prefix list"
   ip_protocol       = "tcp"
   from_port         = 443
   to_port           = 443
-  prefix_list_id    = [data.aws_ec2_managed_prefix_list.cloudfront.id] # Counts as 55 routes, Default quota is 50 routes Must request route table increase
+  prefix_list_id    = [data.aws_ec2_managed_prefix_list.cloudfront.id] 
 }
 
 # Egress: Allow HTTP traffic to EKS worker nodes
