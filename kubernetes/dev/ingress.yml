@@ -4,6 +4,7 @@ metadata:
   name: alb-ingress
   annotations:
     kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/security-groups: aws_security_group.alb_sg
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
@@ -20,6 +21,7 @@ spec:
                 name: resume-nginx-service # Name of your ClusterIP Service ?
                 port:
                   number: 80 # Target port on  ClusterIP Service which routes to Nginx port 80
+
 
 
 
