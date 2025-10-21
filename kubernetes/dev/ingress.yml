@@ -20,7 +20,8 @@ spec:
               service:
                 name: site-ip-service
                 port:
-                  number: 80 # Target port on  ClusterIP Service which routes to Nginx port 80
+                  number: 80 # Backend target port 
+
 
 
 
