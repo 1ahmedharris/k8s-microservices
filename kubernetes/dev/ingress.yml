@@ -4,11 +4,11 @@ metadata:
   name: alb-ingress
   annotations:
     kubernetes.io/ingress.class: alb
-    alb.ingress.kubernetes.io/security-groups: sg-xxxx # remember to replace with alb security group id
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
     alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:ACCOUNT_ID:certificate/CERTIFICATE_ID
+    alb.ingress.kubernetes.io/security-groups: sg-xxxx # remember to replace with alb security group id
 spec:
   rules:
     - host: my.domain.com 
@@ -21,6 +21,7 @@ spec:
                 name: site-ip-service
                 port:
                   number: 80 # Backend target port 
+
 
 
 
