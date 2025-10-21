@@ -18,9 +18,10 @@ spec:
             pathType: Prefix # Matches any URL path starting with '/'
             backend:
               service:
-                name: resume-nginx-service # Name of your ClusterIP Service ?
+                name: site-ip-service
                 port:
                   number: 80 # Target port on  ClusterIP Service which routes to Nginx port 80
+
 
 
 
