@@ -15,12 +15,12 @@ spec:
       http:
         paths:
           - path: /
-            pathType: Prefix # Matches any URL path starting with '/'
+            pathType: Prefix  
             backend:
               service:
                 name: site-ip-service
                 port:
-                  number: 80 # Backend target port 
+                  number: 80  
     - host: www.site.com
       http:
         paths:
@@ -31,6 +31,7 @@ spec:
                 name: site-ip-service
                 port:
                   number: 80
+
 
 
 
