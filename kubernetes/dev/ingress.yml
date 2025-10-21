@@ -18,7 +18,7 @@ spec:
             pathType: Prefix  
             backend:
               service:
-                name: cluster-ip-service
+                name: site-backend
                 port:
                   number: 80  
     - host: www.site.com
@@ -28,20 +28,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: cluster-ip-service
+                name: site-backend
                 port:
                   number: 80
-
-
-
-
-
-
-
-
-
-
-
-
-
-
