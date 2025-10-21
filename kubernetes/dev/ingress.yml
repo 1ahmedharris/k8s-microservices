@@ -11,7 +11,7 @@ metadata:
     alb.ingress.kubernetes.io/security-groups: sg-xxxx # remember to replace with alb security group id
 spec:
   rules:
-    - host: my.domain.com 
+    - host: site.com 
       http:
         paths:
           - path: /
@@ -21,6 +21,16 @@ spec:
                 name: site-ip-service
                 port:
                   number: 80 # Backend target port 
+    - host: www.site.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: site-ip-service
+                port:
+                  number: 80
 
 
 
