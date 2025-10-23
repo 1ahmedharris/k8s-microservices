@@ -1,8 +1,8 @@
-# Network endpoint for site pods
+# Endpoint for site pods
 apiVersion: v1
 kind: Service
 metadata:
-  name: site-backend
+  name: site-frontend
 spec:
   type: ClusterIP
   selector:
