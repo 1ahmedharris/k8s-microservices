@@ -9,4 +9,4 @@ spec:
     app: site-pods
   ports:
     - port: 80
-      targetPort: 80
+      targetPort: 5000
