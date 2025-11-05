@@ -9,7 +9,7 @@ RUN rm -f /etc/nginx/conf.d/default.conf
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 
-WORKDIR /var/www/html
+WORKDIR /usr/share/nginx/html
 
 
 # Remove default content from base image's web root.
@@ -17,7 +17,7 @@ RUN rm -rf ./*
 
 
 # Copy site content into the web root.
-COPY site-files/ /var/www/html
+COPY /site-files /usr/share/nginx/html
 
 
 # Set correct ownership, file and directory permissions for the NGINX user.
