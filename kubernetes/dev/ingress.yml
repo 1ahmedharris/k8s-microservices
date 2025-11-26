@@ -8,7 +8,8 @@ metadata:
     alb.ingress.kubernetes.io/target-type: ip
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
     alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:ACCOUNT_ID:certificate/CERTIFICATE_ID
-    alb.ingress.kubernetes.io/security-groups: sg-xxxx # remember to replace with alb security group id
+    alb.ingress.kubernetes.io/load-balancer-attributes: idle_timeout.timeout_seconds=295
+    alb.ingress.kubernetes.io/security-groups: sg-xxxx # replace with alb security group id
 spec:
   rules:
     - host: site.com 
@@ -31,3 +32,4 @@ spec:
                 name: site-backend
                 port:
                   number: 80
+
