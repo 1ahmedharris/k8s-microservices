@@ -6,6 +6,13 @@ data "aws_cloudfront_cache_policy" "caching_optimized" {
   name = "Managed-CachingOptimized"
 }
 
+resource "aws_cloudfront_origin_access_control" "cloudfront_oac" {
+  name                              = "eks-cdn-oac"
+  origin_access_control_origin_type = "alb"
+  signing_behavior                  = "always"
+  signing_protocol                  = "sigv4"
+}
+
 resource "aws_cloudfront_distribution" "cloudfront_cdn" {
   enabled             = true
   is_ipv6_enabled     = true
@@ -18,11 +25,13 @@ resource "aws_cloudfront_distribution" "cloudfront_cdn" {
   http_version        = "http2"
 
   origin {
-    domain_name         = aws_lb.alb.dns_name  
-    origin_id           = local.alb_origin_id 
-    connection_attempts = 3
-    connection_timeout  = 7
-
+    domain_name                        = aws_lb.alb.dns_name  
+    origin_access_control_id           = aws_cloudfront_origin_access_control.cloudfront_oac.id 
+    origin_id                          = local.alb_origin_id 
+    origin_keepalive_timeout           = 120
+    connection_attempts                = 3
+    connection_timeout                 = 7
+  }
     custom_origin_config {
       http_port              = 80
       https_port             = 443
